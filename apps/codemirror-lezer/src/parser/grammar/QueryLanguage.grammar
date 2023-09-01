@@ -1,0 +1,17 @@
+@top Query { expression }
+
+expression { Predicate }
+
+Predicate { Property Operator Value }
+
+Operator { EqualOp | NotEqualOp }
+
+@tokens {
+    Property { @asciiLetter+ }
+
+    Value { @asciiLetter+ }
+
+    EqualOp { "=" }
+
+    NotEqualOp { "!=" }
+}

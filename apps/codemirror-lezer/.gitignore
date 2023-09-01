@@ -1,0 +1,3 @@
+src/parser/grammar/*
+!src/parser/grammar/*.grammar
+!src/parser/grammar/index.ts
