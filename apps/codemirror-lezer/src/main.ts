@@ -1,14 +1,16 @@
-import { Editor, EditorEvents, ChangeEvent } from './editor';
+import { ChangeEvent, Editor, EditorEvents } from './editor';
+import { Preview } from './preview';
 
 import './style.css';
 
 const appRoot = document.querySelector<HTMLDivElement>('#app')!;
 const editor = new Editor(appRoot);
-
-editor.focus();
+const preview = new Preview(appRoot);
 
 editor.addEventListener(EditorEvents.change, (event) => {
-    if (event instanceof ChangeEvent && event.detail.query) {
-        console.log('Query', event.detail.query);
+    if (event instanceof ChangeEvent) {
+        preview.update(event.detail.query);
     }
 });
+
+editor.focus();

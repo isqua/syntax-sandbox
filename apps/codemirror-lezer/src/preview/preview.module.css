@@ -1,0 +1,10 @@
+.code {
+    max-width: 100%;
+    overflow: auto;
+    border-radius: 0.375rem;
+    padding: 0.5rem 0.75rem;
+}
+
+.full .code {
+    background-color: var(--code-background-color);
+}

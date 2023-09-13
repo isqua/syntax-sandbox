@@ -14,6 +14,7 @@
     -webkit-text-size-adjust: 100%;
 
     --control-border-color: #374151;
+    --code-background-color: #52525b;
 }
 
 a {
@@ -70,6 +71,7 @@ button:focus-visible {
         background-color: #ffffff;
 
         --control-border-color: #e5e7eb;
+        --code-background-color: #f3f4f6;
     }
 
     a:hover {
