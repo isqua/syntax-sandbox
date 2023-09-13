@@ -1,8 +1,12 @@
 import { defaultKeymap, history, historyKeymap } from '@codemirror/commands';
-import { ensureSyntaxTree } from '@codemirror/language';
+import {
+    ensureSyntaxTree,
+    type LanguageSupport,
+} from '@codemirror/language';
 import { EditorState, EditorStateConfig } from '@codemirror/state';
 import { EditorView, ViewUpdate, keymap, placeholder } from '@codemirror/view';
-import { getQueryFromTree } from '../parser';
+import { type Tree } from '@lezer/common';
+import { type Query } from '../parser';
 import { debounce } from '../utils';
 
 import {
@@ -12,21 +16,28 @@ import {
     PLACEHOLDER_TEXT,
 } from './constants';
 import { ChangeEvent } from './events';
-import { queryLanguage } from './language';
 
 import './editor.css';
+
+type QueryParser = (doc: string, editorTree?: Tree | null) => Query;
+
+type EditorOptions = {
+    parent: HTMLElement;
+    language: LanguageSupport;
+    toQuery: QueryParser;
+}
 
 export class Editor extends EventTarget {
     protected box: HTMLElement;
     protected state: EditorState;
     protected view: EditorView;
 
-    constructor(parent: HTMLElement) {
+    constructor(options: EditorOptions) {
         super();
 
-        this.box = this.injectElement(parent);
+        this.box = this.injectElement(options.parent);
 
-        this.state = EditorState.create(this.buildStateConfig());
+        this.state = EditorState.create(this.buildStateConfig(options));
 
         this.view = new EditorView({
             state: this.state,
@@ -47,9 +58,9 @@ export class Editor extends EventTarget {
         return box;
     }
 
-    protected buildStateConfig(): EditorStateConfig {
+    protected buildStateConfig(options: EditorOptions): EditorStateConfig {
         const onUpdate = debounce(
-            (event: ViewUpdate) => this.onViewUpdate(event),
+            (event: ViewUpdate) => this.onViewUpdate(event, options.toQuery),
             ONCHANGE_DEBOUNCE_TIMEOUT_IN_MS,
         );
 
@@ -62,17 +73,17 @@ export class Editor extends EventTarget {
                     ...historyKeymap,
                 ]),
                 placeholder(PLACEHOLDER_TEXT),
-                queryLanguage(),
+                options.language,
                 EditorView.updateListener.of(onUpdate),
             ],
         };
     }
 
-    protected onViewUpdate(event: ViewUpdate) {
+    protected onViewUpdate(event: ViewUpdate, toQuery: QueryParser) {
         if (event.docChanged) {
             const tree = ensureSyntaxTree(event.state, event.state.doc.length, PARSE_TREE_TIMEOUT_IN_MS);
             const text = event.state.doc.sliceString(0);
-            const query = getQueryFromTree(text, tree);
+            const query = toQuery(text, tree);
 
             this.dispatchEvent(new ChangeEvent(query, text));
         }

@@ -22,6 +22,6 @@ export const queryLanguage = () => {
 
     return new LanguageSupport(
         languageDefinition,
-        [syntaxHighlighting(defaultHighlightStyle)],
+        [syntaxHighlighting(defaultHighlightStyle)]
     );
 };
