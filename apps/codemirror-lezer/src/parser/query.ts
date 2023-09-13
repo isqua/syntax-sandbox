@@ -1,4 +1,4 @@
-import type { SyntaxNode } from '@lezer/common';
+import type { SyntaxNode, Tree } from '@lezer/common';
 
 import { Terms, parser } from './grammar';
 import { QlPredicate, Query } from './types';
@@ -23,8 +23,8 @@ const getPredicateQuery = (doc: string, predicate: SyntaxNode): QlPredicate => {
     };
 };
 
-export const getQueryFromTree = (doc: string): Query => {
-    const tree = parser.parse(doc);
+export const getQueryFromTree = (doc: string, editorTree?: Tree | null): Query => {
+    const tree = editorTree || parser.parse(doc);
     const topNode = tree.topNode;
 
     if (topNode.type.id !== Terms.Query) {
