@@ -21,6 +21,8 @@ jobs:
         run: pnpm install
       - name: lint
         run: pnpm run lint
+      - name: test
+        run: pnpm test
   audit:
     runs-on: ubuntu-latest
     steps:
