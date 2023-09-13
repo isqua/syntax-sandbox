@@ -1,3 +1,8 @@
+import { Editor } from './editor';
+
 import './style.css';
 
-document.querySelector<HTMLDivElement>('#app')!;
+const appRoot = document.querySelector<HTMLDivElement>('#app')!;
+const editor = new Editor(appRoot);
+
+editor.focus();

@@ -1,0 +1,9 @@
+.editor {
+    max-width: 100%;
+    border: 1px solid var(--control-border-color);
+    border-radius: 0.375rem;
+}
+
+.editor .cm-editor {
+    border-radius: inherit;
+}
