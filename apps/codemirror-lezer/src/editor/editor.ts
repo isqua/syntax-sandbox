@@ -3,6 +3,7 @@ import { EditorState, EditorStateConfig } from '@codemirror/state';
 import { EditorView, keymap, placeholder } from '@codemirror/view';
 
 import { HISTORY_GROUP_DELAY_IN_MS, PLACEHOLDER_TEXT } from './constants';
+import { queryLanguage } from './language';
 
 import './editor.css';
 
@@ -45,6 +46,7 @@ export class Editor {
                     ...historyKeymap,
                 ]),
                 placeholder(PLACEHOLDER_TEXT),
+                queryLanguage(),
             ],
         };
     }
