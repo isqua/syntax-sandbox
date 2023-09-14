@@ -2,6 +2,7 @@
     --syntax-property-color: #c8e1ff;
     --syntax-string-value-color: #e1e4e8;
     --syntax-operator-color: #fff;
+    --syntax-parentheses-color: #d1bcf9;
 }
 
 .property {
@@ -16,10 +17,19 @@
     color: var(--syntax-operator-color);
 }
 
+.logicOperator {
+    color: var(--syntax-operator-color);
+}
+
+.parentheses {
+    color: var(--syntax-parentheses-color);
+}
+
 @media (prefers-color-scheme: light) {
     :root {
         --syntax-property-color: #0366d6;
         --syntax-string-value-color: #044289;
         --syntax-operator-color: #1b1f23;
+        --syntax-parentheses-color: #5a32a3;
     }
 }

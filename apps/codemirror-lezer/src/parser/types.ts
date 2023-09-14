@@ -8,4 +8,10 @@ export type QlPredicate = {
     [property: string]: QlPropertyDescriptor;
 };
 
-export type Query = QlPredicate;
+export type QlNotExpression = {
+    '!': QlExpression;
+};
+
+export type QlExpression = QlNotExpression | QlPredicate;
+
+export type Query = QlExpression;

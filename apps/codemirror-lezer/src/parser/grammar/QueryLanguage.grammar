@@ -1,6 +1,10 @@
-@top Query { expression }
+@top Query { Expression }
 
-expression { Predicate }
+Expression { ParenthesesExpression | NotExpression | Predicate }
+
+ParenthesesExpression { OpenParenthesis Expression ClosingParenthesis }
+
+NotExpression { NotOperator Expression }
 
 Predicate { Property Operator Value }
 
@@ -14,4 +18,10 @@ Operator { EqualOp | NotEqualOp }
     EqualOp { "=" }
 
     NotEqualOp { "!=" }
+
+    NotOperator { "!" }
+
+    OpenParenthesis { "(" }
+
+    ClosingParenthesis { ")" }
 }

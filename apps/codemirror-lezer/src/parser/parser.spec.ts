@@ -39,4 +39,24 @@ describe('parser', () => {
 
         expect(actual).toEqual<Query>({ reviewer: { '': '' }});
     });
+
+    describe('nesting', () => {
+        it('should parse expression in parentheses', () => {
+            const actual = getQueryFromTree('(type = bug)');
+
+            expect(actual).toEqual<Query>({ type: { '=': 'bug' } });
+        });
+
+        it('should parse negated expression in parentheses', () => {
+            const actual = getQueryFromTree('!(type = bug)');
+
+            expect(actual).toEqual<Query>({ '!': { type: { '=': 'bug' } } });
+        });
+
+        it('should parse double negation', () => {
+            const actual = getQueryFromTree('!!(type = bug)');
+
+            expect(actual).toEqual<Query>({ '!': { '!': { type: { '=': 'bug' } } } });
+        });
+    });
 });

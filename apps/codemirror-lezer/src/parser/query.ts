@@ -1,7 +1,7 @@
 import type { SyntaxNode, Tree } from '@lezer/common';
 
 import { Terms, parser } from './grammar';
-import { QlPredicate, Query } from './types';
+import { QlExpression, QlNotExpression, QlPredicate, Query } from './types';
 
 class QueryExtractor {
     constructor(protected doc: string) {}
@@ -18,8 +18,50 @@ class QueryExtractor {
 
     protected traverseNode(node: SyntaxNode): Query | null {
         switch (node.type.id) {
+        case Terms.ParenthesesExpression:
+            return this.traverseParenthesesExpression(node);
+        case Terms.NotExpression:
+            return this.traverseNotExpression(node);
+        case Terms.Expression:
+            return this.traverseExpression(node);
         case Terms.Predicate:
             return this.traversePredicate(node);
+        }
+
+        return null;
+    }
+
+    protected traverseExpression(node: SyntaxNode): QlExpression | null {
+        const child = node.firstChild;
+
+        if (child) {
+            return this.traverseNode(child);
+        }
+
+        return null;
+    }
+
+    protected traverseParenthesesExpression(node: SyntaxNode): QlExpression | null {
+        const child = node.getChild(Terms.Expression);
+
+        if (child) {
+            return this.traverseNode(child);
+        }
+
+        return null;
+    }
+
+    protected traverseNotExpression(node: SyntaxNode): QlNotExpression | null {
+        const child = node.lastChild;
+
+        let childExpression: QlExpression | null = null;
+
+        if (child) {
+            childExpression = this.traverseNode(child);
+        }
+
+        if (childExpression) {
+            return { '!': childExpression };
         }
 
         return null;
