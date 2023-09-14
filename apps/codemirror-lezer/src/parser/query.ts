@@ -3,39 +3,52 @@ import type { SyntaxNode, Tree } from '@lezer/common';
 import { Terms, parser } from './grammar';
 import { QlPredicate, Query } from './types';
 
-const getNodeText = (doc: string, node: SyntaxNode): string => {
-    return doc.slice(node.from, node.to);
-};
+class QueryExtractor {
+    constructor(protected doc: string) {}
 
-const getPredicateQuery = (doc: string, predicate: SyntaxNode): QlPredicate => {
-    const property = predicate.getChild(Terms.Property);
-    const operator = predicate.getChild(Terms.Operator);
-    const value = predicate.getChild(Terms.Value);
+    public traverseQuery(node: SyntaxNode): Query | null {
+        const child = node.firstChild;
 
-    const propertyText = property ? getNodeText(doc, property) : '';
-    const operatorText = operator ? getNodeText(doc, operator) : '';
-    const valueText = value ? getNodeText(doc, value) : '';
-
-    return {
-        [propertyText]: {
-            [operatorText]: valueText
+        if (child) {
+            return this.traverseNode(child);
         }
-    };
-};
+
+        return null;
+    }
+
+    protected traverseNode(node: SyntaxNode): Query | null {
+        switch (node.type.id) {
+        case Terms.Predicate:
+            return this.traversePredicate(node);
+        }
+
+        return null;
+    }
+
+    protected traversePredicate(node: SyntaxNode): QlPredicate | null {
+        const property = node.getChild(Terms.Property);
+        const operator = node.getChild(Terms.Operator);
+        const value = node.getChild(Terms.Value);
+
+        const propertyText = property ? this.getNodeText(property) : '';
+        const operatorText = operator ? this.getNodeText(operator) : '';
+        const valueText = value ? this.getNodeText(value) : '';
+
+        return {
+            [propertyText]: {
+                [operatorText]: valueText
+            }
+        };
+    }
+
+    protected getNodeText(node: SyntaxNode): string {
+        return this.doc.slice(node.from, node.to);
+    }
+}
 
 export const getQueryFromTree = (doc: string, editorTree?: Tree | null): Query => {
     const tree = editorTree || parser.parse(doc);
-    const topNode = tree.topNode;
+    const extractor = new QueryExtractor(doc);
 
-    if (topNode.type.id !== Terms.Query) {
-        return {};
-    }
-
-    const predicate = topNode.getChild(Terms.Predicate);
-
-    if (!predicate) {
-        return {};
-    }
-
-    return getPredicateQuery(doc, predicate);
+    return extractor.traverseQuery(tree.topNode) ?? {};
 };
