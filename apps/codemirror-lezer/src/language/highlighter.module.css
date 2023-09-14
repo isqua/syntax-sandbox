@@ -1,0 +1,25 @@
+:root {
+    --syntax-property-color: #c8e1ff;
+    --syntax-string-value-color: #e1e4e8;
+    --syntax-operator-color: #fff;
+}
+
+.property {
+    color: var(--syntax-property-color);
+}
+
+.string {
+    color: var(--syntax-string-value-color);
+}
+
+.operator {
+    color: var(--syntax-operator-color);
+}
+
+@media (prefers-color-scheme: light) {
+    :root {
+        --syntax-property-color: #0366d6;
+        --syntax-string-value-color: #044289;
+        --syntax-operator-color: #1b1f23;
+    }
+}

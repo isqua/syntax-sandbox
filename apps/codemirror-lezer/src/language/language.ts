@@ -1,16 +1,17 @@
-import { LRLanguage, LanguageSupport, defaultHighlightStyle, syntaxHighlighting } from '@codemirror/language';
+import { LRLanguage, LanguageSupport, syntaxHighlighting } from '@codemirror/language';
 import { styleTags, tags } from '@lezer/highlight';
 
 import { parser } from '../parser';
+import { highlighter } from './highlighter';
 
 export const queryLanguage = () => {
     const parserWithMetadata = parser.configure({
         props: [
             // Properties are Terms of the grammar
             styleTags({
-                Property: tags.labelName,
+                Property: tags.propertyName,
                 Value: tags.string,
-                Operator: tags.operator,
+                'EqualOp NotEqualOp': tags.operator,
             }),
         ],
     });
@@ -22,6 +23,6 @@ export const queryLanguage = () => {
 
     return new LanguageSupport(
         languageDefinition,
-        [syntaxHighlighting(defaultHighlightStyle)]
+        [syntaxHighlighting(highlighter)]
     );
 };
