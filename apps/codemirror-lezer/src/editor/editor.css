@@ -7,3 +7,7 @@
 .editor .cm-editor {
     border-radius: inherit;
 }
+
+.editor .cm-editor .cm-scroller {
+    font-family: Menlo, Monaco, 'Courier New', monospace;
+}
