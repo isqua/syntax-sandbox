@@ -100,5 +100,64 @@ describe('autocomplete', () => {
             });
         });
     });
+
+    describe('values', () => {
+        it('should complete values for current property after an operator', () => {
+            const document = 'status =';
+            const position = document.length;
+            const properties: PropertiesConfig = {
+                status: { values: [ 'open', 'wip', 'fixed' ] },
+            };
+
+            const completion = getCompletion(properties, document, position);
+
+            expect(completion).toEqual({
+                options: [
+                    { label: 'open', apply: 'open ' },
+                    { label: 'wip', apply: 'wip ' },
+                    { label: 'fixed', apply: 'fixed ' },
+                ],
+                from: position,
+            });
+        });
+
+        it('should complete values for current property after an operator and a space', () => {
+            const document = 'status = ';
+            const position = document.length;
+            const properties: PropertiesConfig = {
+                status: { values: [ 'open', 'wip', 'fixed' ] },
+            };
+
+            const completion = getCompletion(properties, document, position);
+
+            expect(completion).toEqual({
+                options: [
+                    { label: 'open', apply: 'open ' },
+                    { label: 'wip', apply: 'wip ' },
+                    { label: 'fixed', apply: 'fixed ' },
+                ],
+                from: position,
+            });
+        });
+
+        it('should complete values when typing a value', () => {
+            const document = 'status = op';
+            const position = document.length;
+            const properties: PropertiesConfig = {
+                status: { values: [ 'open', 'wip', 'fixed' ] },
+            };
+
+            const completion = getCompletion(properties, document, position);
+
+            expect(completion).toEqual({
+                options: [
+                    { label: 'open', apply: 'open ' },
+                    { label: 'wip', apply: 'wip ' },
+                    { label: 'fixed', apply: 'fixed ' },
+                ],
+                from: 'status = '.length,
+            });
+        });
+    });
 });
 

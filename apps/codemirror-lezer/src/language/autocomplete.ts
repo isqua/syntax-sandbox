@@ -21,6 +21,15 @@ class DataBasedSuggest {
             { label: '!=', apply: '!= ' },
         ];
     }
+
+    getPropertyValues(propertyName: string): Completion[] {
+        const values = this.properties[propertyName]?.values ?? [];
+
+        return values.map(value => ({
+            label: value,
+            apply: `${value} `,
+        }));
+    }
 }
 
 const closestKnownParent = (node: SyntaxNode | null): SyntaxNode | null => {
@@ -33,6 +42,16 @@ const closestKnownParent = (node: SyntaxNode | null): SyntaxNode | null => {
     }
 
     return closestKnownParent(node.parent);
+};
+
+const isOperator = (node: SyntaxNode | null): node is SyntaxNode =>
+    node?.parent?.type.id === Terms.Operator;
+
+const getPropertyNameFromPredicate = (context: CompletionContext, predicate?: SyntaxNode | null): string => {
+    const property = predicate?.getChild(Terms.Property);
+    const propertyName = property ? context.state.sliceDoc(property.from, property.to) : '';
+
+    return propertyName;
 };
 
 export const buildCompletion = (properties: PropertiesConfig) => {
@@ -56,11 +75,46 @@ export const buildCompletion = (properties: PropertiesConfig) => {
             };
         }
 
-        if (currentNode?.type.id === Terms.Predicate) {
+        if (currentNode?.type.id === Terms.Value) {
+            const predicate = currentNode.parent;
+            const propertyName = getPropertyNameFromPredicate(context, predicate);
+
             return {
-                options: suggest.getPropertyOperators(),
-                from: context.pos,
+                options: suggest.getPropertyValues(propertyName),
+                from: currentNode.from,
             };
+        }
+
+        if (isOperator(currentNode)) {
+            const predicate = currentNode.parent?.parent;
+            const propertyName = getPropertyNameFromPredicate(context, predicate);
+
+            if (propertyName) {
+                return {
+                    options: suggest.getPropertyValues(propertyName),
+                    from: currentNode.to,
+                };
+            }
+        }
+
+        if (currentNode?.type.id === Terms.Predicate) {
+            const operator = currentNode.getChild(Terms.Operator);
+
+            if (!operator) {
+                return {
+                    options: suggest.getPropertyOperators(),
+                    from: context.pos,
+                };
+            }
+
+            const propertyName = getPropertyNameFromPredicate(context, currentNode);
+
+            if (propertyName) {
+                return {
+                    options: suggest.getPropertyValues(propertyName),
+                    from: context.pos,
+                };
+            }
         }
 
         return null;
