@@ -159,5 +159,103 @@ describe('autocomplete', () => {
             });
         });
     });
+
+    describe('logical operators', () => {
+        it('should complete logical operators after a predicate', () => {
+            const document = 'status = open ';
+            const position = document.length;
+            const properties: PropertiesConfig = {};
+
+            const completion = getCompletion(properties, document, position);
+
+            expect(completion).toEqual({
+                options: [
+                    { label: 'and', apply: 'and ' },
+                    { label: 'or', apply: 'or ' },
+                ],
+                from: position,
+            });
+        });
+
+        it('should complete logical operators after a predicate when typing', () => {
+            const document = 'status = open a';
+            const position = document.length;
+            const properties: PropertiesConfig = {};
+
+            const completion = getCompletion(properties, document, position);
+
+            expect(completion).toEqual({
+                options: [
+                    { label: 'and', apply: 'and ' },
+                    { label: 'or', apply: 'or ' },
+                ],
+                from: position - 1,
+            });
+        });
+
+        it('should complete logical operators after a parentheses', () => {
+            const document = '(status = open) ';
+            const position = document.length;
+            const properties: PropertiesConfig = {};
+
+            const completion = getCompletion(properties, document, position);
+
+            expect(completion).toEqual({
+                options: [
+                    { label: 'and', apply: 'and ' },
+                    { label: 'or', apply: 'or ' },
+                ],
+                from: position,
+            });
+        });
+
+        it('should complete logical operators after a parentheses when typing', () => {
+            const document = '(status = open) o';
+            const position = document.length;
+            const properties: PropertiesConfig = {};
+
+            const completion = getCompletion(properties, document, position);
+
+            expect(completion).toEqual({
+                options: [
+                    { label: 'and', apply: 'and ' },
+                    { label: 'or', apply: 'or ' },
+                ],
+                from: position - 1,
+            });
+        });
+
+        it('should complete logical operators after a negation', () => {
+            const document = '!(status = open) ';
+            const position = document.length;
+            const properties: PropertiesConfig = {};
+
+            const completion = getCompletion(properties, document, position);
+
+            expect(completion).toEqual({
+                options: [
+                    { label: 'and', apply: 'and ' },
+                    { label: 'or', apply: 'or ' },
+                ],
+                from: position,
+            });
+        });
+
+        it('should complete logical operators after a negation when typing', () => {
+            const document = '!(status = open) an';
+            const position = document.length;
+            const properties: PropertiesConfig = {};
+
+            const completion = getCompletion(properties, document, position);
+
+            expect(completion).toEqual({
+                options: [
+                    { label: 'and', apply: 'and ' },
+                    { label: 'or', apply: 'or ' },
+                ],
+                from: position - 2,
+            });
+        });
+    });
 });
 

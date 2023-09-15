@@ -22,6 +22,13 @@ class DataBasedSuggest {
         ];
     }
 
+    getLogicalOperators(): Completion[] {
+        return [
+            { label: 'and', apply: 'and ' },
+            { label: 'or', apply: 'or ' },
+        ];
+    }
+
     getPropertyValues(propertyName: string): Completion[] {
         const values = this.properties[propertyName]?.values ?? [];
 
@@ -44,6 +51,16 @@ const closestKnownParent = (node: SyntaxNode | null): SyntaxNode | null => {
     return closestKnownParent(node.parent);
 };
 
+const latestKnownChild = (node: SyntaxNode): SyntaxNode | null => {
+    let child: SyntaxNode | null | undefined = node.lastChild;
+
+    while (child?.type.id === 0) {
+        child = child?.prevSibling;
+    }
+
+    return child;
+};
+
 const isOperator = (node: SyntaxNode | null): node is SyntaxNode =>
     node?.parent?.type.id === Terms.Operator;
 
@@ -62,9 +79,29 @@ export const buildCompletion = (properties: PropertiesConfig) => {
         const currentNode = closestKnownParent(tree.resolveInner(context.pos, -1));
 
         if (currentNode?.type.id === Terms.Query) {
+            const lastChild = latestKnownChild(currentNode);
+
+            if (!lastChild) {
+                return {
+                    options: suggest.getProperties(),
+                    from: context.pos,
+                };
+            }
+
             return {
-                options: suggest.getProperties(),
-                from: context.pos,
+                options: suggest.getLogicalOperators(),
+                from: lastChild.to + 1,
+            };
+        }
+
+        if (currentNode?.type.id === Terms.NotExpression) {
+            const lastChild = currentNode?.lastChild;
+            const isParen = lastChild?.type.id === Terms.ClosingParenthesis;
+            const from = lastChild && !isParen ? lastChild.from : context.pos;
+
+            return {
+                options: suggest.getLogicalOperators(),
+                from,
             };
         }
 

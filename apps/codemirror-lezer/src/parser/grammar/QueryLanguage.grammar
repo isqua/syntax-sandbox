@@ -34,4 +34,10 @@ Operator { EqualOp | NotEqualOp }
     OpenParenthesis { "(" }
 
     ClosingParenthesis { ")" }
+
+    space { @whitespace+ }
+}
+
+@skip {
+    space
 }
