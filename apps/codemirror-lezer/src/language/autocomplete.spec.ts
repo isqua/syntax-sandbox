@@ -81,6 +81,44 @@ describe('autocomplete', () => {
                 from: 0,
             });
         });
+
+        it('should complete properties after logical operator', () => {
+            const document = 'status = open and ';
+            const position = document.length;
+            const properties: PropertiesConfig = {
+                status: { values: [] },
+                priority: { values: [] },
+            };
+
+            const completion = getCompletion(properties, document, position);
+
+            expect(completion).toEqual({
+                options: [
+                    { label: 'status', apply: 'status ' },
+                    { label: 'priority', apply: 'priority ' }
+                ],
+                from: position,
+            });
+        });
+
+        it('should complete properties after logical operator when typing', () => {
+            const document = 'status = open and st';
+            const position = document.length;
+            const properties: PropertiesConfig = {
+                status: { values: [] },
+                priority: { values: [] },
+            };
+
+            const completion = getCompletion(properties, document, position);
+
+            expect(completion).toEqual({
+                options: [
+                    { label: 'status', apply: 'status ' },
+                    { label: 'priority', apply: 'priority ' }
+                ],
+                from: position - 2,
+            });
+        });
     });
 
     describe('operators', () => {

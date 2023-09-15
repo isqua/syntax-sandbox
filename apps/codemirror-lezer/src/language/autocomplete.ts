@@ -105,6 +105,13 @@ export const buildCompletion = (properties: PropertiesConfig) => {
             };
         }
 
+        if (currentNode?.type.id === Terms.AndExpression || currentNode?.type.id === Terms.OrExpression) {
+            return {
+                options: suggest.getProperties(),
+                from: context.pos,
+            };
+        }
+
         if (currentNode?.type.id === Terms.Property) {
             return {
                 options: suggest.getProperties(),
