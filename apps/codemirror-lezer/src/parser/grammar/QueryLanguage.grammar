@@ -1,10 +1,16 @@
 @top Query { Expression }
 
-Expression { ParenthesesExpression | NotExpression | Predicate }
+@precedence { binaryAnd @left, binaryOr @left }
+
+Expression { AndExpression | OrExpression | ParenthesesExpression | NotExpression | Predicate }
 
 ParenthesesExpression { OpenParenthesis Expression ClosingParenthesis }
 
 NotExpression { NotOperator Expression }
+
+AndExpression { Expression !binaryAnd LogicalAndOp Expression }
+
+OrExpression { Expression !binaryOr LogicalOrOp Expression }
 
 Predicate { Property Operator Value }
 
@@ -14,6 +20,10 @@ Operator { EqualOp | NotEqualOp }
     Property { @asciiLetter+ }
 
     Value { @asciiLetter+ }
+
+    LogicalAndOp { "and" }
+
+    LogicalOrOp { "or" }
 
     EqualOp { "=" }
 

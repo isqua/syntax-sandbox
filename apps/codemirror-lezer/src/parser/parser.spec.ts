@@ -58,5 +58,101 @@ describe('parser', () => {
 
             expect(actual).toEqual<Query>({ '!': { '!': { type: { '=': 'bug' } } } });
         });
+
+        it('should parse expressions conjunction', () => {
+            const actual = getQueryFromTree('type = bug and priority = normal');
+
+            expect(actual).toEqual<Query>({
+                'and': [
+                    { type: { '=': 'bug' } },
+                    { priority: { '=': 'normal' } }
+                ]
+            });
+        });
+
+        it('should parse expressions disjunction', () => {
+            const actual = getQueryFromTree('type = bug or priority = normal');
+
+            expect(actual).toEqual<Query>({
+                'or': [
+                    { type: { '=': 'bug' } },
+                    { priority: { '=': 'normal' } }
+                ]
+            });
+        });
+
+        it('should prioritize first conjunction over right disjunction', () => {
+            const actual = getQueryFromTree('type = bug and priority = normal or color = red');
+
+            expect(actual).toEqual<Query>({
+                'or': [
+                    {
+                        and: [
+                            { type: { '=': 'bug' } },
+                            { priority: { '=': 'normal' } },
+                        ]
+                    },
+                    { color: { '=': 'red' } },
+                ]
+            });
+        });
+
+        it('should prioritize right conjunction over left disjunction', () => {
+            const actual = getQueryFromTree('type = bug or priority = normal and color = red');
+
+            expect(actual).toEqual<Query>({
+                'or': [
+                    { type: { '=': 'bug' } },
+                    {
+                        and: [
+                            { priority: { '=': 'normal' } },
+                            { color: { '=': 'red' } },
+                        ]
+                    },
+                ]
+            });
+        });
+
+        it('should prioritize parens disjunction over conjunction', () => {
+            const actual = getQueryFromTree('(type = bug or priority = normal) and color = red');
+
+            expect(actual).toEqual<Query>({
+                'and': [
+                    {
+                        or: [
+                            { type: { '=': 'bug' } },
+                            { priority: { '=': 'normal' } },
+                        ]
+                    },
+                    { color: { '=': 'red' } },
+                ]
+            });
+        });
+
+        it('should parse negated conjunction', () => {
+            const actual = getQueryFromTree('!(type = bug and priority = normal)');
+
+            expect(actual).toEqual<Query>({
+                '!': {
+                    and: [
+                        { type: { '=': 'bug' } },
+                        { priority: { '=': 'normal' } },
+                    ]
+                },
+            });
+        });
+
+        it('should parse negated disjunction', () => {
+            const actual = getQueryFromTree('!(type = bug or priority = normal)');
+
+            expect(actual).toEqual<Query>({
+                '!': {
+                    or: [
+                        { type: { '=': 'bug' } },
+                        { priority: { '=': 'normal' } },
+                    ]
+                },
+            });
+        });
     });
 });

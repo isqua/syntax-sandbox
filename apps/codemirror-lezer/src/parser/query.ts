@@ -1,7 +1,7 @@
 import type { SyntaxNode, Tree } from '@lezer/common';
 
 import { Terms, parser } from './grammar';
-import { QlExpression, QlNotExpression, QlPredicate, Query } from './types';
+import { QlAndExpression, QlExpression, QlNotExpression, QlOrExpression, QlPredicate, Query } from './types';
 
 class QueryExtractor {
     constructor(protected doc: string) {}
@@ -22,6 +22,10 @@ class QueryExtractor {
             return this.traverseParenthesesExpression(node);
         case Terms.NotExpression:
             return this.traverseNotExpression(node);
+        case Terms.AndExpression:
+            return this.traverseAndExpression(node);
+        case Terms.OrExpression:
+            return this.traverseOrExpression(node);
         case Terms.Expression:
             return this.traverseExpression(node);
         case Terms.Predicate:
@@ -29,6 +33,10 @@ class QueryExtractor {
         }
 
         return null;
+    }
+
+    protected getNotEmptyExpression(expr: QlExpression | null): expr is QlExpression {
+        return expr !== null;
     }
 
     protected traverseExpression(node: SyntaxNode): QlExpression | null {
@@ -62,6 +70,38 @@ class QueryExtractor {
 
         if (childExpression) {
             return { '!': childExpression };
+        }
+
+        return null;
+    }
+
+    protected traverseAndExpression(node: SyntaxNode): QlAndExpression | null {
+        const children = node.getChildren(Terms.Expression).concat(node.getChildren(Terms.ParenthesesExpression));
+
+        const childExpressions: QlExpression[] = children
+            .map((child) => this.traverseNode(child))
+            .filter(this.getNotEmptyExpression);
+
+        if (childExpressions.length > 0) {
+            return {
+                'and': childExpressions,
+            };
+        }
+
+        return null;
+    }
+
+    protected traverseOrExpression(node: SyntaxNode): QlOrExpression | null {
+        const children = node.getChildren(Terms.Expression).concat(node.getChildren(Terms.ParenthesesExpression));
+
+        const childExpressions: QlExpression[] = children
+            .map((child) => this.traverseNode(child))
+            .filter(this.getNotEmptyExpression);
+
+        if (childExpressions.length > 0) {
+            return {
+                'or': childExpressions,
+            };
         }
 
         return null;

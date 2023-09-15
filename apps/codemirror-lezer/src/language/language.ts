@@ -12,7 +12,7 @@ export const queryLanguage = () => {
                 Property: tags.propertyName,
                 Value: tags.string,
                 'EqualOp NotEqualOp': tags.operator,
-                NotOperator: tags.logicOperator,
+                'NotOperator LogicalAndOp LogicalOrOp': tags.logicOperator,
                 'OpenParenthesis ClosingParenthesis': tags.paren,
             }),
         ],

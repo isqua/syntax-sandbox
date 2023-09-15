@@ -12,6 +12,17 @@ export type QlNotExpression = {
     '!': QlExpression;
 };
 
-export type QlExpression = QlNotExpression | QlPredicate;
+export type QlAndExpression = {
+    'and': QlExpression[];
+};
+
+export type QlOrExpression = {
+    'or': QlExpression[];
+};
+
+export type QlExpression = QlNotExpression |
+    QlAndExpression |
+    QlOrExpression |
+    QlPredicate;
 
 export type Query = QlExpression;
