@@ -6,9 +6,9 @@ import type { PropertiesConfig } from '../config';
 import { buildCompletion } from './autocomplete';
 import { queryLanguage } from './language';
 
-const getEditorState = (document: string) => EditorState.create({
+const getEditorState = (properties: PropertiesConfig, document: string) => EditorState.create({
     doc: document,
-    extensions: [ queryLanguage() ],
+    extensions: [ queryLanguage(properties) ],
 });
 
 const getCompletion = (
@@ -16,7 +16,7 @@ const getCompletion = (
     document: string,
     position: number,
 ): CompletionResult | null => {
-    const state = getEditorState(document);
+    const state = getEditorState(properties, document);
     const ctx = new CompletionContext(state, position, false);
     const autocomplete = buildCompletion(properties);
 

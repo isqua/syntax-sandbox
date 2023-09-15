@@ -1,3 +1,4 @@
+import { properties } from './config';
 import { ChangeEvent, Editor, EditorEvents } from './editor';
 import { queryLanguage } from './language';
 import { getQueryFromTree } from './parser';
@@ -7,9 +8,11 @@ import './style.css';
 
 const appRoot = document.querySelector<HTMLDivElement>('#app')!;
 
+const language = queryLanguage(properties);
+
 const editor = new Editor({
     parent: appRoot,
-    language: queryLanguage(),
+    language,
     toQuery: getQueryFromTree,
 });
 

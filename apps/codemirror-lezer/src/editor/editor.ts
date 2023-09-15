@@ -1,3 +1,10 @@
+import {
+    autocompletion,
+    closeBrackets,
+    closeBracketsKeymap,
+    completionKeymap,
+    startCompletion,
+} from '@codemirror/autocomplete';
 import { defaultKeymap, history, historyKeymap } from '@codemirror/commands';
 import {
     ensureSyntaxTree,
@@ -68,9 +75,13 @@ export class Editor extends EventTarget {
             extensions: [
                 EditorView.lineWrapping,
                 history({ newGroupDelay: HISTORY_GROUP_DELAY_IN_MS }),
+                closeBrackets(),
+                autocompletion(),
                 keymap.of([
+                    ...closeBracketsKeymap,
                     ...defaultKeymap,
                     ...historyKeymap,
+                    ...completionKeymap,
                 ]),
                 placeholder(PLACEHOLDER_TEXT),
                 options.language,
@@ -86,6 +97,10 @@ export class Editor extends EventTarget {
             const query = toQuery(text, tree);
 
             this.dispatchEvent(new ChangeEvent(query, text));
+
+            if (event.view.hasFocus) {
+                window.requestIdleCallback(() => startCompletion(event.view));
+            }
         }
     }
 }
