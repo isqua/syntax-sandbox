@@ -24,22 +24,62 @@ const getCompletion = (
 };
 
 describe('autocomplete', () => {
-    it('should complete properties for empty document', () => {
-        const document = '';
-        const position = 0;
-        const properties: PropertiesConfig = {
-            status: { values: [] },
-            priority: { values: [] },
-        };
+    describe('properties', () => {
+        it('should complete properties for empty document', () => {
+            const document = '';
+            const position = 0;
+            const properties: PropertiesConfig = {
+                status: { values: [] },
+                priority: { values: [] },
+            };
 
-        const completion = getCompletion(properties, document, position);
+            const completion = getCompletion(properties, document, position);
 
-        expect(completion).toEqual({
-            options: [
-                { label: 'status', apply: 'status ' },
-                { label: 'priority', apply: 'priority ' }
-            ],
-            from: 0,
+            expect(completion).toEqual({
+                options: [
+                    { label: 'status', apply: 'status ' },
+                    { label: 'priority', apply: 'priority ' }
+                ],
+                from: 0,
+            });
+        });
+
+        it('should complete properties for document with spaces only', () => {
+            const document = '  ';
+            const position = 2;
+            const properties: PropertiesConfig = {
+                status: { values: [] },
+                priority: { values: [] },
+            };
+
+            const completion = getCompletion(properties, document, position);
+
+            expect(completion).toEqual({
+                options: [
+                    { label: 'status', apply: 'status ' },
+                    { label: 'priority', apply: 'priority ' }
+                ],
+                from: 2,
+            });
+        });
+
+        it('should complete properties when typing property name', () => {
+            const document = 'st';
+            const position = document.length;
+            const properties: PropertiesConfig = {
+                status: { values: [] },
+                priority: { values: [] },
+            };
+
+            const completion = getCompletion(properties, document, position);
+
+            expect(completion).toEqual({
+                options: [
+                    { label: 'status', apply: 'status ' },
+                    { label: 'priority', apply: 'priority ' }
+                ],
+                from: 0,
+            });
         });
     });
 });
