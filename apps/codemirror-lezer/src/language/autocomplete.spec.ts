@@ -82,5 +82,23 @@ describe('autocomplete', () => {
             });
         });
     });
+
+    describe('operators', () => {
+        it('should complete operators after property name', () => {
+            const document = 'status ';
+            const position = document.length;
+            const properties: PropertiesConfig = {};
+
+            const completion = getCompletion(properties, document, position);
+
+            expect(completion).toEqual({
+                options: [
+                    { label: '=', apply: '= ' },
+                    { label: '!=', apply: '!= ' },
+                ],
+                from: position,
+            });
+        });
+    });
 });
 

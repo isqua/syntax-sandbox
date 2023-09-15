@@ -14,6 +14,13 @@ class DataBasedSuggest {
             apply: `${name} `,
         }));
     }
+
+    getPropertyOperators(): Completion[] {
+        return [
+            { label: '=', apply: '= ' },
+            { label: '!=', apply: '!= ' },
+        ];
+    }
 }
 
 const closestKnownParent = (node: SyntaxNode | null): SyntaxNode | null => {
@@ -46,6 +53,13 @@ export const buildCompletion = (properties: PropertiesConfig) => {
             return {
                 options: suggest.getProperties(),
                 from: currentNode.from,
+            };
+        }
+
+        if (currentNode?.type.id === Terms.Predicate) {
+            return {
+                options: suggest.getPropertyOperators(),
+                from: context.pos,
             };
         }
 
