@@ -64,6 +64,12 @@ const latestKnownChild = (node: SyntaxNode): SyntaxNode | null => {
 const isOperator = (node: SyntaxNode | null): node is SyntaxNode =>
     node?.parent?.type.id === Terms.Operator;
 
+const isLogicalExpression = (node: SyntaxNode) => [
+    Terms.NotExpression,
+    Terms.AndExpression,
+    Terms.OrExpression
+].includes(node?.type.id ?? -1);
+
 const getPropertyNameFromPredicate = (context: CompletionContext, predicate?: SyntaxNode | null): string => {
     const property = predicate?.getChild(Terms.Property);
     const propertyName = property ? context.state.sliceDoc(property.from, property.to) : '';
@@ -78,7 +84,11 @@ export const buildCompletion = (properties: PropertiesConfig) => {
         const tree = syntaxTree(context.state);
         const currentNode = closestKnownParent(tree.resolveInner(context.pos, -1));
 
-        if (currentNode?.type.id === Terms.Query) {
+        if (!currentNode) {
+            return null;
+        }
+
+        if (currentNode.type.id === Terms.Query) {
             const lastChild = latestKnownChild(currentNode);
 
             if (!lastChild) {
@@ -94,32 +104,34 @@ export const buildCompletion = (properties: PropertiesConfig) => {
             };
         }
 
-        if (currentNode?.type.id === Terms.NotExpression) {
-            const lastChild = currentNode?.lastChild;
-            const isParen = lastChild?.type.id === Terms.ClosingParenthesis;
-            const from = lastChild && !isParen ? lastChild.from : context.pos;
+        if (isLogicalExpression(currentNode)) {
+            const lastChild = latestKnownChild(currentNode);
 
-            return {
-                options: suggest.getLogicalOperators(),
-                from,
-            };
-        }
+            if (lastChild?.type.id === Terms.Expression) {
+                const lastChild = currentNode?.lastChild;
+                const isParen = lastChild?.type.id === Terms.ClosingParenthesis;
+                const from = lastChild && !isParen ? lastChild.from : context.pos;
 
-        if (currentNode?.type.id === Terms.AndExpression || currentNode?.type.id === Terms.OrExpression) {
+                return {
+                    options: suggest.getLogicalOperators(),
+                    from,
+                };
+            }
+
             return {
                 options: suggest.getProperties(),
                 from: context.pos,
             };
         }
 
-        if (currentNode?.type.id === Terms.Property) {
+        if (currentNode.type.id === Terms.Property) {
             return {
                 options: suggest.getProperties(),
                 from: currentNode.from,
             };
         }
 
-        if (currentNode?.type.id === Terms.Value) {
+        if (currentNode.type.id === Terms.Value) {
             const predicate = currentNode.parent;
             const propertyName = getPropertyNameFromPredicate(context, predicate);
 
@@ -141,7 +153,7 @@ export const buildCompletion = (properties: PropertiesConfig) => {
             }
         }
 
-        if (currentNode?.type.id === Terms.Predicate) {
+        if (currentNode.type.id === Terms.Predicate) {
             const operator = currentNode.getChild(Terms.Operator);
 
             if (!operator) {

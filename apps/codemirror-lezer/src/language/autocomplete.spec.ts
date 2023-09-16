@@ -294,6 +294,22 @@ describe('autocomplete', () => {
                 from: position - 2,
             });
         });
+
+        it('should complete logical operators after a logical expression', () => {
+            const document = 'priority != high or priority != high ';
+            const position = document.length;
+            const properties: PropertiesConfig = {};
+
+            const completion = getCompletion(properties, document, position);
+
+            expect(completion).toEqual({
+                options: [
+                    { label: 'and', apply: 'and ' },
+                    { label: 'or', apply: 'or ' },
+                ],
+                from: position,
+            });
+        });
     });
 });
 
