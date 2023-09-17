@@ -6,33 +6,24 @@ import {
     startCompletion,
 } from '@codemirror/autocomplete';
 import { defaultKeymap, history, historyKeymap } from '@codemirror/commands';
-import {
-    ensureSyntaxTree,
-    type LanguageSupport,
-} from '@codemirror/language';
+import type { LanguageSupport } from '@codemirror/language';
 import { lintKeymap } from '@codemirror/lint';
-import { EditorState, EditorStateConfig } from '@codemirror/state';
-import { EditorView, ViewUpdate, keymap, placeholder } from '@codemirror/view';
-import { type Tree } from '@lezer/common';
-import { type Query } from '../parser';
-import { debounce } from '../utils';
+import { EditorState, type EditorStateConfig } from '@codemirror/state';
+import { EditorView, keymap, placeholder, type ViewUpdate } from '@codemirror/view';
 
+import { debounce } from '../utils';
 import {
     HISTORY_GROUP_DELAY_IN_MS,
     ONCHANGE_DEBOUNCE_TIMEOUT_IN_MS,
-    PARSE_TREE_TIMEOUT_IN_MS,
     PLACEHOLDER_TEXT,
 } from './constants';
 import { ChangeEvent } from './events';
 
 import './editor.css';
 
-type QueryParser = (doc: string, editorTree?: Tree | null) => Query;
-
 type EditorOptions = {
     parent: HTMLElement;
     language: LanguageSupport;
-    toQuery: QueryParser;
 }
 
 export class Editor extends EventTarget {
@@ -68,7 +59,7 @@ export class Editor extends EventTarget {
 
     protected buildStateConfig(options: EditorOptions): EditorStateConfig {
         const onUpdate = debounce(
-            (event: ViewUpdate) => this.onViewUpdate(event, options.toQuery),
+            (event: ViewUpdate) => this.onViewUpdate(event),
             ONCHANGE_DEBOUNCE_TIMEOUT_IN_MS,
         );
 
@@ -92,13 +83,9 @@ export class Editor extends EventTarget {
         };
     }
 
-    protected onViewUpdate(event: ViewUpdate, toQuery: QueryParser) {
+    protected onViewUpdate(event: ViewUpdate) {
         if (event.docChanged) {
-            const tree = ensureSyntaxTree(event.state, event.state.doc.length, PARSE_TREE_TIMEOUT_IN_MS);
-            const text = event.state.doc.sliceString(0);
-            const query = toQuery(text, tree);
-
-            this.dispatchEvent(new ChangeEvent(query, text));
+            this.dispatchEvent(new ChangeEvent(event));
 
             if (event.view.hasFocus) {
                 window.requestIdleCallback(() => startCompletion(event.view));
