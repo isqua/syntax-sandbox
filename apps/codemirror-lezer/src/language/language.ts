@@ -1,10 +1,12 @@
 import { LRLanguage, LanguageSupport, syntaxHighlighting } from '@codemirror/language';
+import { linter } from '@codemirror/lint';
 import { styleTags, tags } from '@lezer/highlight';
 
 import type { PropertiesConfig } from '../config';
 import { parser } from '../parser';
 import { buildCompletion } from './autocomplete';
 import { highlighter } from './highlighter';
+import { buildQueryLinter } from './linter';
 
 export const queryLanguage = (properties: PropertiesConfig) => {
     const parserWithMetadata = parser.configure({
@@ -28,8 +30,12 @@ export const queryLanguage = (properties: PropertiesConfig) => {
         },
     });
 
-    return new LanguageSupport(
-        languageDefinition,
-        [syntaxHighlighting(highlighter)]
-    );
+    const lint = buildQueryLinter(properties);
+
+    const support = [
+        syntaxHighlighting(highlighter),
+        linter(view => lint(view.state)),
+    ];
+
+    return new LanguageSupport(languageDefinition, support);
 };

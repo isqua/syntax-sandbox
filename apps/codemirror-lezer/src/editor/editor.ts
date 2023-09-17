@@ -10,6 +10,7 @@ import {
     ensureSyntaxTree,
     type LanguageSupport,
 } from '@codemirror/language';
+import { lintKeymap } from '@codemirror/lint';
 import { EditorState, EditorStateConfig } from '@codemirror/state';
 import { EditorView, ViewUpdate, keymap, placeholder } from '@codemirror/view';
 import { type Tree } from '@lezer/common';
@@ -82,6 +83,7 @@ export class Editor extends EventTarget {
                     ...defaultKeymap,
                     ...historyKeymap,
                     ...completionKeymap,
+                    ...lintKeymap,
                 ]),
                 placeholder(PLACEHOLDER_TEXT),
                 options.language,
