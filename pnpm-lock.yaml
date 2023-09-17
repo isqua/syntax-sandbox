@@ -50,6 +50,9 @@ importers:
       '@lezer/lr':
         specifier: 1.3.10
         version: 1.3.10
+      '@syntax-sandbox/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
       vitest:
         specifier: 0.34.3
         version: 0.34.3
@@ -60,6 +63,15 @@ importers:
       vite:
         specifier: 4.4.5
         version: 4.4.5(@types/node@20.5.7)
+
+  packages/ui:
+    devDependencies:
+      '@types/css-modules':
+        specifier: 1.0.3
+        version: 1.0.3
+      typescript:
+        specifier: 5.0.2
+        version: 5.0.2
 
 packages:
 
@@ -424,6 +436,10 @@ packages:
   /@types/chai@4.3.5:
     resolution: {integrity: sha512-mEo1sAde+UCE6b2hxn332f1g1E8WfYRu6p5SvTKr2ZKC1f7gFJXk4h5PyGP9Dt6gCaG8y8XhwnXWC6Iy2cmBng==}
     dev: false
+
+  /@types/css-modules@1.0.3:
+    resolution: {integrity: sha512-dFJKRbgpu3sMsiDYX7dSL7ZMD/9q1UxbU/dZfIuVsIyRsST/agUNfR24biGeLOmh3YcdUmj71TadJ0mssFVNfA==}
+    dev: true
 
   /@types/json-schema@7.0.12:
     resolution: {integrity: sha512-Hr5Jfhc9eYOQNPYO5WLDq/n4jqijdHNlDXjuAQkkt+mWdQR+XJToOHrsD4cPaMXpn6KO7y2+wM8AZEs8VpBLVA==}

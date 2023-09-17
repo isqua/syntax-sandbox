@@ -1,0 +1,14 @@
+{
+  "name": "@syntax-sandbox/ui",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "@types/css-modules": "1.0.3",
+    "typescript": "5.0.2"
+  }
+}
