@@ -38,6 +38,9 @@ export class Editor extends EventTarget {
 
         this.state = EditorState.create(this.buildStateConfig(options));
 
+        this.onDocChanged = debounce(this.onDocChanged, ONCHANGE_DEBOUNCE_TIMEOUT_IN_MS, this);
+        this.startCompletion = debounce(this.startCompletion, ONCHANGE_DEBOUNCE_TIMEOUT_IN_MS, this);
+
         this.view = new EditorView({
             state: this.state,
             parent: this.box,
@@ -58,11 +61,6 @@ export class Editor extends EventTarget {
     }
 
     protected buildStateConfig(options: EditorOptions): EditorStateConfig {
-        const onUpdate = debounce(
-            (event: ViewUpdate) => this.onViewUpdate(event),
-            ONCHANGE_DEBOUNCE_TIMEOUT_IN_MS,
-        );
-
         return {
             extensions: [
                 EditorView.lineWrapping,
@@ -78,18 +76,26 @@ export class Editor extends EventTarget {
                 ]),
                 placeholder(PLACEHOLDER_TEXT),
                 options.language,
-                EditorView.updateListener.of(onUpdate),
+                EditorView.updateListener.of(event => this.onViewUpdate(event)),
             ],
         };
     }
 
     protected onViewUpdate(event: ViewUpdate) {
         if (event.docChanged) {
-            this.dispatchEvent(new ChangeEvent(event));
+            this.onDocChanged(event);
 
             if (event.view.hasFocus) {
-                window.requestIdleCallback(() => startCompletion(event.view));
+                this.startCompletion();
             }
         }
+    }
+
+    protected startCompletion() {
+        window.requestIdleCallback(() => startCompletion(this.view));
+    }
+
+    protected onDocChanged(event: ViewUpdate) {
+        this.dispatchEvent(new ChangeEvent(event));
     }
 }

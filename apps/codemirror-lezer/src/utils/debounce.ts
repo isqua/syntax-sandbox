@@ -9,6 +9,7 @@ export interface debounceResult<TArgs extends unknown[], TRes> {
 export function debounce<TArgs extends unknown[], TRes = void>(
     fn: debounceCallback<TArgs, TRes>,
     delayInMs: number,
+    ctx: unknown,
 ): debounceResult<TArgs, TRes> {
     let timer: number;
 
@@ -18,7 +19,7 @@ export function debounce<TArgs extends unknown[], TRes = void>(
         }
 
         timer = window.setTimeout(
-            () => resolve(fn(...args)),
+            () => resolve(fn.apply(ctx, args)),
             delayInMs,
         );
     });
