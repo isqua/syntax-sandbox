@@ -1,4 +1,4 @@
-import type { Query } from '../parser';
+type Query = Record<string, unknown>;
 
 import styles from './preview.module.css';
 

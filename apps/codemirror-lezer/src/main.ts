@@ -1,10 +1,10 @@
 import { ensureSyntaxTree } from '@codemirror/language';
+import { Preview } from '@syntax-sandbox/ui';
 
 import { properties } from './config';
 import { ChangeEvent, Editor, EditorEvents } from './editor';
 import { queryLanguage } from './language';
 import { getQueryFromTree } from './parser';
-import { Preview } from './preview';
 
 import './style.css';
 
