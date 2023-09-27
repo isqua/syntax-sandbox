@@ -14,12 +14,9 @@
     "test": "vitest"
   },
   "dependencies": {
-    "@codemirror/autocomplete": "6.9.1",
-    "@codemirror/commands": "6.2.5",
     "@codemirror/language": "6.9.0",
     "@codemirror/lint": "6.4.2",
     "@codemirror/state": "6.2.1",
-    "@codemirror/view": "6.18.1",
     "@lezer/common": "1.0.4",
     "@lezer/generator": "1.5.0",
     "@lezer/highlight": "1.1.6",
@@ -28,6 +25,7 @@
     "vitest": "0.34.3"
   },
   "devDependencies": {
+    "@codemirror/autocomplete": "6.9.1",
     "typescript": "5.0.2",
     "vite": "4.4.5"
   }

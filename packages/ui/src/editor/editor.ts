@@ -8,7 +8,7 @@ import {
 import { defaultKeymap, history, historyKeymap } from '@codemirror/commands';
 import type { LanguageSupport } from '@codemirror/language';
 import { lintKeymap } from '@codemirror/lint';
-import { EditorState, type EditorStateConfig } from '@codemirror/state';
+import { EditorState, type Extension, type EditorStateConfig } from '@codemirror/state';
 import { EditorView, keymap, placeholder, type ViewUpdate } from '@codemirror/view';
 
 import { debounce } from '../utils';
@@ -61,24 +61,24 @@ export class Editor extends EventTarget {
     }
 
     protected buildStateConfig(options: EditorOptions): EditorStateConfig {
-        return {
-            extensions: [
-                EditorView.lineWrapping,
-                history({ newGroupDelay: HISTORY_GROUP_DELAY_IN_MS }),
-                closeBrackets(),
-                autocompletion(),
-                keymap.of([
-                    ...closeBracketsKeymap,
-                    ...defaultKeymap,
-                    ...historyKeymap,
-                    ...completionKeymap,
-                    ...lintKeymap,
-                ]),
-                placeholder(PLACEHOLDER_TEXT),
-                options.language,
-                EditorView.updateListener.of(event => this.onViewUpdate(event)),
-            ],
-        };
+        const extensions: Extension[] = [
+            EditorView.lineWrapping,
+            history({ newGroupDelay: HISTORY_GROUP_DELAY_IN_MS }),
+            closeBrackets(),
+            autocompletion(),
+            keymap.of([
+                ...closeBracketsKeymap,
+                ...defaultKeymap,
+                ...historyKeymap,
+                ...completionKeymap,
+                ...lintKeymap,
+            ]),
+            placeholder(PLACEHOLDER_TEXT),
+            options.language,
+            EditorView.updateListener.of(event => this.onViewUpdate(event)),
+        ];
+
+        return { extensions };
     }
 
     protected onViewUpdate(event: ViewUpdate) {

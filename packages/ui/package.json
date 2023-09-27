@@ -7,7 +7,15 @@
   "scripts": {
     "build": "tsc"
   },
+  "dependencies": {
+    "@codemirror/autocomplete": "6.9.1",
+    "@codemirror/commands": "6.2.5",
+    "@codemirror/lint": "6.4.2",
+    "@codemirror/state": "6.2.1",
+    "@codemirror/view": "6.18.1"
+  },
   "devDependencies": {
+    "@codemirror/language": "6.9.0",
     "@types/css-modules": "1.0.3",
     "typescript": "5.0.2"
   }
