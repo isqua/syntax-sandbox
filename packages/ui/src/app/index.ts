@@ -1,0 +1,1 @@
+export { getAppRoot } from './app';

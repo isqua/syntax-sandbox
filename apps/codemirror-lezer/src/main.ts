@@ -1,15 +1,13 @@
 import { ensureSyntaxTree } from '@codemirror/language';
-import { Editor, EditorEvents, ChangeEvent, Preview } from '@syntax-sandbox/ui';
+import { ChangeEvent, Editor, EditorEvents, Preview, getAppRoot } from '@syntax-sandbox/ui';
 
 import { properties } from './config';
 import { queryLanguage } from './language';
 import { getQueryFromTree } from './parser';
 
-import './style.css';
-
 const PARSE_TREE_TIMEOUT_IN_MS = 500;
 
-const appRoot = document.querySelector<HTMLDivElement>('#app')!;
+const appRoot = getAppRoot('#app');
 
 const language = queryLanguage(properties);
 
