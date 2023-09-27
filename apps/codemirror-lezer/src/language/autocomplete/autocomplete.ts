@@ -2,8 +2,8 @@ import type { Completion, CompletionContext, CompletionResult } from '@codemirro
 import { syntaxTree } from '@codemirror/language';
 import type { SyntaxNode } from '@lezer/common';
 
-import type { PropertiesConfig } from '../config';
-import { Terms } from '../parser';
+import type { PropertiesConfig } from '../../config';
+import { Terms } from '../../parser';
 
 class DataBasedSuggest {
     constructor(protected properties: PropertiesConfig) {}

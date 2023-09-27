@@ -2,8 +2,8 @@ import { syntaxTree } from '@codemirror/language';
 import type { Diagnostic } from '@codemirror/lint';
 import type { EditorState } from '@codemirror/state';
 
-import type { PropertiesConfig } from '../config';
-import { Terms } from '../parser';
+import type { PropertiesConfig } from '../../config';
+import { Terms } from '../../parser';
 import { QueryValidator } from './QueryValidator';
 
 export const buildQueryLinter = (properties: PropertiesConfig) => {

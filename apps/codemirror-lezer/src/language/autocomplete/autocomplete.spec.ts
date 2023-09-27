@@ -2,9 +2,9 @@ import { CompletionContext, type CompletionResult } from '@codemirror/autocomple
 import { EditorState } from '@codemirror/state';
 import { describe, expect, it } from 'vitest';
 
-import type { PropertiesConfig } from '../config';
+import type { PropertiesConfig } from '../../config';
+import { queryLanguage } from '..';
 import { buildCompletion } from './autocomplete';
-import { queryLanguage } from './language';
 
 const getEditorState = (properties: PropertiesConfig, document: string) => EditorState.create({
     doc: document,
