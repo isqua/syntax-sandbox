@@ -16,6 +16,12 @@ describe('parser', () => {
         expect(actual).toEqual<Query>({ status: { '!=': 'todo' } });
     });
 
+    it('should parse value with the at and dash symbols', () => {
+        const actual = getQueryFromTree('author = @fo_o.bar-baz42');
+
+        expect(actual).toEqual<Query>({ author: { '=': '@fo_o.bar-baz42' } });
+    });
+
     it('should parse empty string', () => {
         const actual = getQueryFromTree('');
 

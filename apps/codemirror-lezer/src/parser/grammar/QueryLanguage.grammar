@@ -19,7 +19,7 @@ Operator { EqualOp | NotEqualOp }
 @tokens {
     Property { @asciiLetter+ }
 
-    Value { @asciiLetter+ }
+    Value { "@"? @asciiLetter+ ("." | "-" | "_" | @digit | @asciiLetter)+ }
 
     LogicalAndOp { "and" }
 
