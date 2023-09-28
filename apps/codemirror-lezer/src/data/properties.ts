@@ -1,4 +1,5 @@
 import { PropertiesConfig } from '../config';
+import { persons } from './persons';
 
 export const properties: PropertiesConfig = {
     status: {
@@ -22,4 +23,7 @@ export const properties: PropertiesConfig = {
             'duplicate',
         ]
     },
+    author: {
+        values: persons.map(person => `@${person.username}`),
+    }
 };
