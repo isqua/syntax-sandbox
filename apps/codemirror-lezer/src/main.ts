@@ -1,7 +1,7 @@
 import { ensureSyntaxTree } from '@codemirror/language';
 import { ChangeEvent, Editor, EditorEvents, Preview, getAppRoot } from '@syntax-sandbox/ui';
 
-import { properties } from './config';
+import { properties } from './data';
 import { queryLanguage } from './language';
 import { getQueryFromTree } from './parser';
 

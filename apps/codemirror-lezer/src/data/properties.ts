@@ -1,4 +1,4 @@
-import { PropertiesConfig } from './types';
+import { PropertiesConfig } from '../config';
 
 export const properties: PropertiesConfig = {
     status: {
