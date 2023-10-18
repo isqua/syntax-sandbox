@@ -1,6 +1,6 @@
 import { syntaxTree } from '@codemirror/language';
 import { type Range } from '@codemirror/state';
-import { Decoration, ViewPlugin, type DecorationSet, type EditorView, type ViewUpdate } from '@codemirror/view';
+import { Decoration, EditorView, ViewPlugin, type DecorationSet, type ViewUpdate } from '@codemirror/view';
 
 import { TokenDetector } from '../common/TokenDetector';
 import type { Decorator } from './base';
@@ -50,5 +50,8 @@ export const decorator = (decorator: Decorator) => {
 
     return ViewPlugin.fromClass(UserDefinedDecorator, {
         decorations: pluginValue => pluginValue.decorations,
+        provide: plugin => EditorView.atomicRanges.of(
+            view => view.plugin(plugin)?.decorations ?? Decoration.none
+        ),
     });
 };
