@@ -1,15 +1,9 @@
 import { Diagnostic } from '@codemirror/lint';
-import { EditorState } from '@codemirror/state';
 import { describe, expect, it } from 'vitest';
 
 import { PropertiesConfig } from '../../config';
-import { queryLanguage } from '../language';
+import { getEditorState } from '../../test/utils/state';
 import { buildQueryLinter } from './linter';
-
-const getEditorState = (properties: PropertiesConfig, document: string) => EditorState.create({
-    doc: document,
-    extensions: [ queryLanguage(properties) ],
-});
 
 const getDiagnostic = (
     properties: PropertiesConfig,

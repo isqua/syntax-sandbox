@@ -3,7 +3,7 @@ import type { Diagnostic } from '@codemirror/lint';
 import type { EditorState } from '@codemirror/state';
 
 import type { PropertiesConfig } from '../../config';
-import { Terms } from '../../parser';
+import { TokenDetector } from '../common/TokenDetector';
 import { QueryValidator } from './QueryValidator';
 
 export const buildQueryLinter = (properties: PropertiesConfig) => {
@@ -11,27 +11,17 @@ export const buildQueryLinter = (properties: PropertiesConfig) => {
 
     return (state: EditorState) => {
         const diagnostics: Diagnostic[] = [];
+        const detector = new TokenDetector();
 
         syntaxTree(state).cursor().iterate(node => {
-            if (node.type.id === Terms.Property) {
-                const propertyName = state.sliceDoc(node.from, node.to);
+            if (detector.isProperty(node)) {
+                const token = detector.getPropertyToken(node, state);
 
-                diagnostics.push(...validator.getPropertyDiagnostics({
-                    tokenType: 'property',
-                    name: propertyName,
-                    node,
-                }));
-            } else if (node.type.id === Terms.Value) {
-                const valueText = state.sliceDoc(node.from, node.to);
-                const property = node.node?.parent?.getChild(Terms.Property);
-                const propertyName = property ? state.sliceDoc(property.from, property.to) : '';
+                diagnostics.push(...validator.getPropertyDiagnostics(token));
+            } else if (detector.isValue(node)) {
+                const token = detector.getValueToken(node, state);
 
-                diagnostics.push(...validator.getValueDiagnostics({
-                    tokenType: 'value',
-                    value: valueText,
-                    property: propertyName,
-                    node,
-                }));
+                diagnostics.push(...validator.getValueDiagnostics(token));
             }
         });
 
