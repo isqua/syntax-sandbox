@@ -29,5 +29,6 @@ pnpm test
 1. [language](./src/language) contains a set of CodeMirror plugins that implement work with the query language defined in Grammar
     1. [highlighter](./src/language/highlighter) highlights different semantic tokens with different colors
     1. [linter](./src/language/linter) shows errors for improper tokens
+    1. [decorator](./src/language/decorator) shows user-defined widgets for some tokens
     1. [autocomplete](./src/language/autocomplete) suggests related tokens to a user
     1. [language](./src/language/language) combines them all
