@@ -1,6 +1,6 @@
-import type { Decoration } from '@codemirror/view';
 import type { Range } from '@codemirror/state';
-import type { PropertyToken, ValueToken } from '../../parser';
+import type { Decoration } from '@codemirror/view';
+import type { PropertyToken, ValueToken } from '../common/tokens';
 
 export interface Decorator {
     decorateValue(token: ValueToken): Range<Decoration>[];

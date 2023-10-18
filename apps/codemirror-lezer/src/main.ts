@@ -3,8 +3,7 @@ import { ChangeEvent, Editor, EditorEvents, Preview, getAppRoot } from '@syntax-
 
 import { persons, properties } from './data';
 import { AppDecorator } from './decorator';
-import { queryLanguage } from './language';
-import { getQueryFromTree } from './parser';
+import { getQueryFromTree, queryLanguage } from './language';
 
 const PARSE_TREE_TIMEOUT_IN_MS = 500;
 

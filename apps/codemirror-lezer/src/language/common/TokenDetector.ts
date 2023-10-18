@@ -1,7 +1,7 @@
 import type { SyntaxNodeRef } from '@lezer/common';
 
-import { Terms } from '../../parser/grammar';
-import type { PropertyToken, ValueToken } from '../../parser/tokens';
+import { Terms } from '../grammar';
+import type { PropertyToken, ValueToken } from './tokens';
 
 interface AbstractState {
     sliceDoc(from?: number, to?: number): string;

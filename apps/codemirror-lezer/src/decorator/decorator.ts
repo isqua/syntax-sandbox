@@ -1,10 +1,10 @@
 import { Decoration } from '@codemirror/view';
 
 import type { Person } from '../data';
-import { ValueToken } from '../parser';
+import type { ValueToken } from '../language';
 
 import { PersonWidget } from './Person/PersonWidget';
-import { BaseDecorator, Decorator } from '../language/decorator';
+import { BaseDecorator, Decorator } from '../language';
 
 export class AppDecorator extends BaseDecorator implements Decorator {
     constructor(protected persons: Person[]) {

@@ -1,6 +1,6 @@
 import type { SyntaxNode, Tree } from '@lezer/common';
 
-import { Terms, parser } from './grammar';
+import { Terms, parser } from '../grammar';
 import { QlAndExpression, QlExpression, QlNotExpression, QlOrExpression, QlPredicate, Query } from './types';
 
 class QueryExtractor {

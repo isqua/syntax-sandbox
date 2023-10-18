@@ -3,10 +3,10 @@ import { linter } from '@codemirror/lint';
 import { styleTags, tags } from '@lezer/highlight';
 
 import type { PropertiesConfig } from '../config';
-import { parser } from '../parser';
 import { buildCompletion } from './autocomplete';
 import { decorator } from './decorator';
 import type { Decorator } from './decorator/base';
+import { parser } from './grammar';
 import { highlighter } from './highlighter';
 import { buildQueryLinter } from './linter';
 

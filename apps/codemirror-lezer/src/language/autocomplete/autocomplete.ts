@@ -3,7 +3,7 @@ import { syntaxTree } from '@codemirror/language';
 import type { SyntaxNode } from '@lezer/common';
 
 import type { PropertiesConfig } from '../../config';
-import { Terms } from '../../parser';
+import { Terms } from '../grammar';
 
 class DataBasedSuggest {
     constructor(protected properties: PropertiesConfig) {}

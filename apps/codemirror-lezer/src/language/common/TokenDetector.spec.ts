@@ -2,9 +2,9 @@ import { syntaxTree } from '@codemirror/language';
 import { describe, expect, it } from 'vitest';
 
 import { PropertiesConfig } from '../../config';
-import { PropertyToken, ValueToken } from '../../parser';
 import { getEditorState } from '../../test/utils/state';
 import { TokenDetector } from './TokenDetector';
+import type { PropertyToken, ValueToken } from './tokens';
 
 describe('TokenDetector', () => {
     it('should find properties correctly', () => {

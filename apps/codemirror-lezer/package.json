@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "grammar": "lezer-generator src/parser/grammar/QueryLanguage.grammar -o src/parser/grammar/QueryLanguage.ts",
+    "grammar": "lezer-generator src/language/grammar/QueryLanguage.grammar -o src/language/grammar/QueryLanguage.ts",
     "predev": "pnpm run grammar",
     "prebuild": "pnpm run grammar",
     "pretest": "pnpm run grammar",

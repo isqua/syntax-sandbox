@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { getQueryFromTree } from './query';
 import { Query } from './types';
 
-describe('parser', () => {
+describe('query', () => {
     it('should parse string equality', () => {
         const actual = getQueryFromTree('type = bug');
 
