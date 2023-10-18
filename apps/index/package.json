@@ -1,0 +1,12 @@
+{
+  "name": "index",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "devDependencies": {
+    "vite": "4.4.5"
+  }
+}
