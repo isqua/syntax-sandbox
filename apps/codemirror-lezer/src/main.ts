@@ -1,7 +1,8 @@
 import { ensureSyntaxTree } from '@codemirror/language';
 import { ChangeEvent, Editor, EditorEvents, Preview, getAppRoot } from '@syntax-sandbox/ui';
 
-import { properties } from './data';
+import { persons, properties } from './data';
+import { AppDecorator } from './decorator';
 import { queryLanguage } from './language';
 import { getQueryFromTree } from './parser';
 
@@ -9,7 +10,10 @@ const PARSE_TREE_TIMEOUT_IN_MS = 500;
 
 const appRoot = getAppRoot('#app');
 
-const language = queryLanguage(properties);
+const language = queryLanguage(
+    properties,
+    new AppDecorator(persons),
+);
 
 const editor = new Editor({
     parent: appRoot,

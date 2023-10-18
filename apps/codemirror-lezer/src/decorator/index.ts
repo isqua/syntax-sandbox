@@ -1,0 +1,1 @@
+export { AppDecorator } from './decorator';

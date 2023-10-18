@@ -1,0 +1,15 @@
+:root {
+    --person-background: #475569;
+}
+
+.person {
+    background-color: var(--person-background);
+    padding: 2px 10px;
+    border-radius: 10px;
+}
+
+@media (prefers-color-scheme: light) {
+    :root {
+        --person-background: #e2e8f0;
+    }
+}

@@ -29,6 +29,9 @@ importers:
       '@codemirror/state':
         specifier: 6.2.1
         version: 6.2.1
+      '@codemirror/view':
+        specifier: 6.18.1
+        version: 6.18.1
       '@lezer/common':
         specifier: 1.0.4
         version: 1.0.4

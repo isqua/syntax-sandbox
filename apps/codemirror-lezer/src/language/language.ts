@@ -5,10 +5,12 @@ import { styleTags, tags } from '@lezer/highlight';
 import type { PropertiesConfig } from '../config';
 import { parser } from '../parser';
 import { buildCompletion } from './autocomplete';
+import { decorator } from './decorator';
+import type { Decorator } from './decorator/base';
 import { highlighter } from './highlighter';
 import { buildQueryLinter } from './linter';
 
-export const queryLanguage = (properties: PropertiesConfig) => {
+export const queryLanguage = (properties: PropertiesConfig, appDecorator?: Decorator) => {
     const parserWithMetadata = parser.configure({
         props: [
             // Properties are Terms of the grammar
@@ -36,6 +38,10 @@ export const queryLanguage = (properties: PropertiesConfig) => {
         syntaxHighlighting(highlighter),
         linter(view => lint(view.state)),
     ];
+
+    if (appDecorator) {
+        support.push(decorator(appDecorator));
+    }
 
     return new LanguageSupport(languageDefinition, support);
 };
