@@ -11,3 +11,8 @@
 .editor .cm-editor .cm-scroller {
     font-family: Menlo, Monaco, 'Courier New', monospace;
 }
+
+.editor .cm-editor .cm-tooltip {
+    background-color: var(--code-background-color);
+    border-color: var(--control-border-color);
+}
