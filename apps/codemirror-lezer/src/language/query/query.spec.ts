@@ -56,20 +56,20 @@ describe('query', () => {
         it('should parse negated expression in parentheses', () => {
             const actual = getQueryFromTree('!(type = bug)');
 
-            expect(actual).toEqual<Query>({ '!': { type: { '=': 'bug' } } });
+            expect(actual).toEqual<Query>({ $not: { type: { '=': 'bug' } } });
         });
 
         it('should parse double negation', () => {
             const actual = getQueryFromTree('!!(type = bug)');
 
-            expect(actual).toEqual<Query>({ '!': { '!': { type: { '=': 'bug' } } } });
+            expect(actual).toEqual<Query>({ $not: { $not: { type: { '=': 'bug' } } } });
         });
 
         it('should parse expressions conjunction', () => {
             const actual = getQueryFromTree('type = bug and priority = normal');
 
             expect(actual).toEqual<Query>({
-                'and': [
+                $and: [
                     { type: { '=': 'bug' } },
                     { priority: { '=': 'normal' } }
                 ]
@@ -80,7 +80,7 @@ describe('query', () => {
             const actual = getQueryFromTree('type = bug or priority = normal');
 
             expect(actual).toEqual<Query>({
-                'or': [
+                $or: [
                     { type: { '=': 'bug' } },
                     { priority: { '=': 'normal' } }
                 ]
@@ -91,9 +91,9 @@ describe('query', () => {
             const actual = getQueryFromTree('type = bug and priority = normal or color = red');
 
             expect(actual).toEqual<Query>({
-                'or': [
+                $or: [
                     {
-                        and: [
+                        $and: [
                             { type: { '=': 'bug' } },
                             { priority: { '=': 'normal' } },
                         ]
@@ -107,10 +107,10 @@ describe('query', () => {
             const actual = getQueryFromTree('type = bug or priority = normal and color = red');
 
             expect(actual).toEqual<Query>({
-                'or': [
+                $or: [
                     { type: { '=': 'bug' } },
                     {
-                        and: [
+                        $and: [
                             { priority: { '=': 'normal' } },
                             { color: { '=': 'red' } },
                         ]
@@ -123,9 +123,9 @@ describe('query', () => {
             const actual = getQueryFromTree('(type = bug or priority = normal) and color = red');
 
             expect(actual).toEqual<Query>({
-                'and': [
+                $and: [
                     {
-                        or: [
+                        $or: [
                             { type: { '=': 'bug' } },
                             { priority: { '=': 'normal' } },
                         ]
@@ -139,8 +139,8 @@ describe('query', () => {
             const actual = getQueryFromTree('!(type = bug and priority = normal)');
 
             expect(actual).toEqual<Query>({
-                '!': {
-                    and: [
+                $not: {
+                    $and: [
                         { type: { '=': 'bug' } },
                         { priority: { '=': 'normal' } },
                     ]
@@ -152,8 +152,8 @@ describe('query', () => {
             const actual = getQueryFromTree('!(type = bug or priority = normal)');
 
             expect(actual).toEqual<Query>({
-                '!': {
-                    or: [
+                $not: {
+                    $or: [
                         { type: { '=': 'bug' } },
                         { priority: { '=': 'normal' } },
                     ]

@@ -69,7 +69,7 @@ class QueryExtractor {
         }
 
         if (childExpression) {
-            return { '!': childExpression };
+            return { '$not': childExpression };
         }
 
         return null;
@@ -84,7 +84,7 @@ class QueryExtractor {
 
         if (childExpressions.length > 0) {
             return {
-                'and': childExpressions,
+                '$and': childExpressions,
             };
         }
 
@@ -100,7 +100,7 @@ class QueryExtractor {
 
         if (childExpressions.length > 0) {
             return {
-                'or': childExpressions,
+                '$or': childExpressions,
             };
         }
 

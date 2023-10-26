@@ -9,15 +9,15 @@ export type QlPredicate = {
 };
 
 export type QlNotExpression = {
-    '!': QlExpression;
+    '$not': QlExpression;
 };
 
 export type QlAndExpression = {
-    'and': QlExpression[];
+    '$and': QlExpression[];
 };
 
 export type QlOrExpression = {
-    'or': QlExpression[];
+    '$or': QlExpression[];
 };
 
 export type QlExpression = QlNotExpression |
