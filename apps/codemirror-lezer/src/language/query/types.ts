@@ -1,8 +1,17 @@
 export type QlValue = string;
 
-export type QlPropertyDescriptor = {
-    [operator: string]: QlValue;
-};
+export enum PropertyOperator {
+    eq = '$eq',
+    ne = '$ne',
+}
+
+type PropertyEquality = { [PropertyOperator.eq]: QlValue }
+type PropertyInequality = { [PropertyOperator.ne]: QlValue }
+type PropertyUnfinished = Record<string, never>;
+
+export type QlPropertyDescriptor = PropertyUnfinished |
+    PropertyEquality |
+    PropertyInequality;
 
 export type QlPredicate = {
     [property: string]: QlPropertyDescriptor;

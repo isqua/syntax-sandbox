@@ -1,7 +1,8 @@
 import type { SyntaxNode, Tree } from '@lezer/common';
 
 import { Terms, parser } from '../grammar';
-import { QlAndExpression, QlExpression, QlNotExpression, QlOrExpression, QlPredicate, Query } from './types';
+import { PropertyOperator, QlAndExpression, QlExpression, QlNotExpression, QlOrExpression, QlPredicate, QlPropertyDescriptor, Query } from './types';
+import { UnknownOperatorException } from './exceptions/UnknownOperator';
 
 class QueryExtractor {
     constructor(protected doc: string) {}
@@ -113,18 +114,35 @@ class QueryExtractor {
         const value = node.getChild(Terms.Value);
 
         const propertyText = property ? this.getNodeText(property) : '';
-        const operatorText = operator ? this.getNodeText(operator) : '';
+        const operatorText = operator ? this.getOperator(operator) : null;
         const valueText = value ? this.getNodeText(value) : '';
 
+        if (operatorText === null) {
+            return { [propertyText]: {} };
+        }
+
+        const descriptor = { [operatorText]: valueText } as QlPropertyDescriptor;
+
         return {
-            [propertyText]: {
-                [operatorText]: valueText
-            }
+            [propertyText]: descriptor,
         };
     }
 
     protected getNodeText(node: SyntaxNode): string {
         return this.doc.slice(node.from, node.to);
+    }
+
+    protected getOperator(node: SyntaxNode): PropertyOperator {
+        const text = this.getNodeText(node);
+
+        switch (text) {
+        case '=':
+            return PropertyOperator.eq;
+        case '!=':
+            return PropertyOperator.ne;
+        }
+
+        throw new UnknownOperatorException(text, node);
     }
 }
 
