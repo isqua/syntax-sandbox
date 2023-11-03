@@ -14,6 +14,8 @@
     -webkit-text-size-adjust: 100%;
 
     --control-border-color: #374151;
+    --error-border-color: crimson;
+    --error-text-color: crimson;
     --code-background-color: #52525b;
 }
 

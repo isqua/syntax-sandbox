@@ -1,5 +1,5 @@
 import { ensureSyntaxTree } from '@codemirror/language';
-import { ChangeEvent, Editor, EditorEvents, Preview, getAppRoot } from '@syntax-sandbox/ui';
+import { ChangeEvent, DiagnosisEvent, Editor, EditorEvents, Preview, getAppRoot } from '@syntax-sandbox/ui';
 
 import { persons, properties } from './data';
 import { AppDecorator } from './decorator';
@@ -28,6 +28,14 @@ editor.addEventListener(EditorEvents.change, (event) => {
         const query = tree ? getQueryFromTree(text, tree) : null;
 
         preview.update(query);
+    }
+});
+
+editor.addEventListener(EditorEvents.diagnosis, (event) => {
+    if (event instanceof DiagnosisEvent) {
+        const { diagnostics } = event.detail;
+
+        preview.showErrors(diagnostics);
     }
 });
 

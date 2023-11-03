@@ -7,8 +7,8 @@ import {
 } from '@codemirror/autocomplete';
 import { defaultKeymap, history, historyKeymap } from '@codemirror/commands';
 import type { LanguageSupport } from '@codemirror/language';
-import { lintKeymap } from '@codemirror/lint';
-import { EditorState, type Extension, type EditorStateConfig } from '@codemirror/state';
+import { Diagnostic, lintKeymap } from '@codemirror/lint';
+import { EditorState, type EditorStateConfig, type Extension } from '@codemirror/state';
 import { EditorView, keymap, placeholder, type ViewUpdate } from '@codemirror/view';
 
 import { debounce } from '../utils';
@@ -17,7 +17,8 @@ import {
     ONCHANGE_DEBOUNCE_TIMEOUT_IN_MS,
     PLACEHOLDER_TEXT,
 } from './constants';
-import { ChangeEvent } from './events';
+import { ChangeEvent, DiagnosisEvent } from './events';
+import { errorListener } from './extensions/errorListener';
 
 import './editor.css';
 
@@ -75,6 +76,7 @@ export class Editor extends EventTarget {
             ]),
             placeholder(PLACEHOLDER_TEXT),
             options.language,
+            errorListener((errors, event) => this.onDiagnosticsUpdate(errors, event)),
             EditorView.updateListener.of(event => this.onViewUpdate(event)),
         ];
 
@@ -97,5 +99,15 @@ export class Editor extends EventTarget {
 
     protected onDocChanged(event: ViewUpdate) {
         this.dispatchEvent(new ChangeEvent(event));
+    }
+
+    protected onDiagnosticsUpdate(errors: Diagnostic[], event: ViewUpdate) {
+        if (errors.length) {
+            this.box.classList.add('editorWithError');
+        } else {
+            this.box.classList.remove('editorWithError');
+        }
+
+        this.dispatchEvent(new DiagnosisEvent(event, errors));
     }
 }

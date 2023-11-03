@@ -8,3 +8,15 @@
 .full .code {
     background-color: var(--code-background-color);
 }
+
+.alert {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    color: var(--error-text-color);
+}
+
+.alert .message {
+    display: inline-flex;
+    margin-inline-end: 0.375em;
+}

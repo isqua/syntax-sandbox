@@ -4,6 +4,14 @@
     border-radius: 0.375rem;
 }
 
+.editor.editorWithError {
+    border-color: var(--error-border-color);
+}
+
+.editor.editorWithError .cm-focused {
+    outline-color: var(--error-border-color);
+}
+
 .editor .cm-editor {
     border-radius: inherit;
 }

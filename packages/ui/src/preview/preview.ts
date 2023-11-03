@@ -1,8 +1,11 @@
+import type { Diagnostic } from '@codemirror/lint';
+
 type Query = Record<string, unknown>;
 
 import styles from './preview.module.css';
 
 export class Preview {
+    private alert: HTMLElement;
     private element: HTMLElement;
     private code: HTMLElement;
     private title: HTMLHeadingElement;
@@ -12,6 +15,7 @@ export class Preview {
         parent.appendChild(this.element);
 
         this.title = this.injectTitle();
+        this.alert = this.injectAlert();
         this.code = this.injectCode();
     }
 
@@ -24,6 +28,15 @@ export class Preview {
         this.element.appendChild(wrapper);
 
         return code;
+    }
+
+    protected injectAlert() {
+        const alert = document.createElement('ul');
+
+        alert.classList.add(styles.alert);
+        this.element.appendChild(alert);
+
+        return alert;
     }
 
     protected injectTitle() {
@@ -50,6 +63,18 @@ export class Preview {
         this.element.classList.add(styles.full);
     }
 
+    protected clearErrors() {
+        this.alert.innerHTML = '';
+    }
+
+    protected appendErrorMessage(message: string) {
+        const item = document.createElement('li');
+
+        item.innerText = message + '.';
+        item.classList.add(styles.message);
+        this.alert.appendChild(item);
+    }
+
     update(query: Query | null) {
         if (this.isQueryEmpty(query)) {
             this.setEmptyState();
@@ -62,5 +87,13 @@ export class Preview {
         } catch (e) {
             return;
         }
+    }
+
+    showErrors(errors: Diagnostic[]) {
+        this.clearErrors();
+
+        errors.forEach((error) => {
+            this.appendErrorMessage(error.message);
+        });
     }
 }
