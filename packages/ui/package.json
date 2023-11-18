@@ -16,7 +16,7 @@
   },
   "devDependencies": {
     "@codemirror/language": "6.9.2",
-    "@types/css-modules": "1.0.3",
-    "typescript": "5.0.2"
+    "@types/css-modules": "1.0.5",
+    "typescript": "5.2.2"
   }
 }
