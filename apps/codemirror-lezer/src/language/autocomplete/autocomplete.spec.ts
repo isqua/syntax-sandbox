@@ -8,7 +8,7 @@ import { buildCompletion } from './autocomplete';
 
 const getEditorState = (properties: PropertiesConfig, document: string) => EditorState.create({
     doc: document,
-    extensions: [ queryLanguage(properties) ],
+    extensions: [queryLanguage(properties)],
 });
 
 const getCompletion = (
@@ -144,7 +144,7 @@ describe('autocomplete', () => {
             const document = 'status =';
             const position = document.length;
             const properties: PropertiesConfig = {
-                status: { values: [ 'open', 'wip', 'fixed' ] },
+                status: { values: ['open', 'wip', 'fixed'] },
             };
 
             const completion = getCompletion(properties, document, position);
@@ -159,11 +159,33 @@ describe('autocomplete', () => {
             });
         });
 
+        it('should show rich completion options if they are defined', () => {
+            const document = 'status =';
+            const position = document.length;
+            const properties: PropertiesConfig = {
+                status: {
+                    values: ['open', 'wip', 'fixed'],
+                    completions: [
+                        { label: 'OPEN', apply: 'open' },
+                        { label: 'Work In Progress', apply: 'wip' },
+                        { label: 'We hope it work', apply: 'fixed' },
+                    ],
+                },
+            };
+
+            const completion = getCompletion(properties, document, position);
+
+            expect(completion).toEqual({
+                options: properties.status.completions,
+                from: position,
+            });
+        });
+
         it('should complete values for current property after an operator and a space', () => {
             const document = 'status = ';
             const position = document.length;
             const properties: PropertiesConfig = {
-                status: { values: [ 'open', 'wip', 'fixed' ] },
+                status: { values: ['open', 'wip', 'fixed'] },
             };
 
             const completion = getCompletion(properties, document, position);
@@ -182,7 +204,7 @@ describe('autocomplete', () => {
             const document = 'status = op';
             const position = document.length;
             const properties: PropertiesConfig = {
-                status: { values: [ 'open', 'wip', 'fixed' ] },
+                status: { values: ['open', 'wip', 'fixed'] },
             };
 
             const completion = getCompletion(properties, document, position);
@@ -194,6 +216,21 @@ describe('autocomplete', () => {
                     { label: 'fixed', apply: 'fixed ' },
                 ],
                 from: 'status = '.length,
+            });
+        });
+
+        it('should show no options when the property is not presented', () => {
+            const document = 'resolution = op';
+            const position = document.length;
+            const properties: PropertiesConfig = {
+                status: { values: ['open', 'wip', 'fixed'] },
+            };
+
+            const completion = getCompletion(properties, document, position);
+
+            expect(completion).toEqual({
+                options: [],
+                from: 'resolution = '.length,
             });
         });
     });

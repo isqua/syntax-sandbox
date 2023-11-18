@@ -6,7 +6,7 @@ import type { PropertiesConfig } from '../../config';
 import { Terms } from '../grammar';
 
 class DataBasedSuggest {
-    constructor(protected properties: PropertiesConfig) {}
+    constructor(protected properties: PropertiesConfig) { }
 
     getProperties(): Completion[] {
         return Object.keys(this.properties).map(name => ({
@@ -30,9 +30,17 @@ class DataBasedSuggest {
     }
 
     getPropertyValues(propertyName: string): Completion[] {
-        const values = this.properties[propertyName]?.values ?? [];
+        const propertyConfig = this.properties[propertyName];
 
-        return values.map(value => ({
+        if (!propertyConfig) {
+            return [];
+        }
+
+        if (propertyConfig.completions) {
+            return propertyConfig.completions;
+        }
+
+        return propertyConfig.values.map(value => ({
             label: value,
             apply: `${value} `,
         }));

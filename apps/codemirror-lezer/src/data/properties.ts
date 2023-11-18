@@ -25,5 +25,11 @@ export const properties: PropertiesConfig = {
     },
     author: {
         values: persons.map(person => `@${person.username}`),
+        completions: persons.map(person => ({
+            apply: `@${person.username}`,
+            label: `${person.name} ${person.surname}`,
+            detail: `(@${person.username})`,
+            info: `${person.job}`
+        }))
     }
 };
