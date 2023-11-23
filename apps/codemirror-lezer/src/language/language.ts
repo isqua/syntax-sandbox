@@ -2,7 +2,7 @@ import { LRLanguage, LanguageSupport, syntaxHighlighting } from '@codemirror/lan
 import { linter } from '@codemirror/lint';
 import { styleTags, tags } from '@lezer/highlight';
 
-import { Suggest, Validator, type IDecorator, type PropertiesConfig } from '../model';
+import { Model, type IDecorator, type PropertiesConfig } from '../model';
 import { buildCompletion } from './autocomplete';
 import { decorator } from './decorator';
 import { parser } from './grammar';
@@ -23,18 +23,17 @@ export const queryLanguage = (properties: PropertiesConfig, appDecorator?: IDeco
         ],
     });
 
-    const suggest = new Suggest(properties);
-    const validator = new Validator(properties);
+    const model = new Model(properties);
 
     const languageDefinition = LRLanguage.define({
         name: 'queryLanguage',
         parser: parserWithMetadata,
         languageData: {
-            autocomplete: buildCompletion(suggest),
+            autocomplete: buildCompletion(model.getSuggest()),
         },
     });
 
-    const lint = buildQueryLinter(validator);
+    const lint = buildQueryLinter(model.getValidator());
 
     const support = [
         syntaxHighlighting(highlighter),
