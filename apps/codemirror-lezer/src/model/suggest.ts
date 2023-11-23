@@ -1,7 +1,14 @@
 import type { Completion } from '@codemirror/autocomplete';
 import type { PropertiesConfig } from './properties';
 
-export class Suggest {
+export interface ISuggest {
+    getProperties(): Completion[];
+    getPropertyOperators(): Completion[];
+    getLogicalOperators(): Completion[];
+    getPropertyValues(propertyName: string): Completion[];
+}
+
+export class Suggest implements ISuggest {
     constructor(protected properties: PropertiesConfig) { }
 
     getProperties(): Completion[] {

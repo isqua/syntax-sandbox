@@ -3,7 +3,12 @@ import type { Diagnostic } from '@codemirror/lint';
 import type { PropertiesConfig } from './properties';
 import type { PropertyToken, ValueToken } from './tokens';
 
-export class Validator {
+export interface IValidator {
+    getPropertyDiagnostics(token: PropertyToken): Diagnostic[];
+    getValueDiagnostics(token: ValueToken): Diagnostic[];
+}
+
+export class Validator implements IValidator {
     constructor(protected properties: PropertiesConfig) { }
 
     getPropertyDiagnostics(token: PropertyToken): Diagnostic[] {
