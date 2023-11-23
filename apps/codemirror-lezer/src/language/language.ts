@@ -2,7 +2,7 @@ import { LRLanguage, LanguageSupport, syntaxHighlighting } from '@codemirror/lan
 import { linter } from '@codemirror/lint';
 import { styleTags, tags } from '@lezer/highlight';
 
-import type { PropertiesConfig } from '../config';
+import type { PropertiesConfig } from '../model';
 import { buildCompletion } from './autocomplete';
 import { decorator } from './decorator';
 import type { Decorator } from './decorator/base';

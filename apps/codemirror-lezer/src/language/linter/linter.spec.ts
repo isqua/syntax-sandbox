@@ -1,7 +1,7 @@
 import { Diagnostic } from '@codemirror/lint';
 import { describe, expect, it } from 'vitest';
 
-import { PropertiesConfig } from '../../config';
+import { PropertiesConfig } from '../../model';
 import { getEditorState } from '../../test/utils/state';
 import { buildQueryLinter } from './linter';
 

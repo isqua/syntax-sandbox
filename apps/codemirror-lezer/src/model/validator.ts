@@ -1,9 +1,9 @@
 import type { Diagnostic } from '@codemirror/lint';
 
-import type { PropertiesConfig } from '../../config';
-import type { PropertyToken, ValueToken } from '../common/tokens';
+import type { PropertiesConfig } from './types';
+import type { PropertyToken, ValueToken } from './tokens';
 
-export class QueryValidator {
+export class Validator {
     constructor(protected properties: PropertiesConfig) { }
 
     getPropertyDiagnostics(token: PropertyToken): Diagnostic[] {

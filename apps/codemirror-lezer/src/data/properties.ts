@@ -1,4 +1,4 @@
-import { PropertiesConfig } from '../config';
+import { PropertiesConfig } from '../model';
 import { persons } from './persons';
 
 export const properties: PropertiesConfig = {

@@ -1,6 +1,6 @@
 import { EditorState } from '@codemirror/state';
 
-import type { PropertiesConfig } from '../../config';
+import type { PropertiesConfig } from '../../model';
 import { queryLanguage } from '../../language';
 
 export const getEditorState = (properties: PropertiesConfig, document: string) => EditorState.create({

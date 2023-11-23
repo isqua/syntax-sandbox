@@ -2,8 +2,8 @@ import { type Range } from '@codemirror/state';
 import { Decoration } from '@codemirror/view';
 import { describe, expect, it } from 'vitest';
 
+import type { PropertyToken, ValueToken } from '../../model';
 import { getEditorState } from '../../test/utils/state';
-import type { PropertyToken, ValueToken } from '../common/tokens';
 import { decorate } from './decorator';
 
 type DecorationExpectation = {

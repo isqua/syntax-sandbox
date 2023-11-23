@@ -2,7 +2,7 @@ import type { Completion, CompletionContext, CompletionResult } from '@codemirro
 import { syntaxTree } from '@codemirror/language';
 import type { SyntaxNode } from '@lezer/common';
 
-import type { PropertiesConfig } from '../../config';
+import type { PropertiesConfig } from '../../model';
 import { Terms } from '../grammar';
 
 class DataBasedSuggest {

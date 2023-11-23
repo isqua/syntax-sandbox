@@ -2,12 +2,12 @@ import { syntaxTree } from '@codemirror/language';
 import type { Diagnostic } from '@codemirror/lint';
 import type { EditorState } from '@codemirror/state';
 
-import type { PropertiesConfig } from '../../config';
+import type { PropertiesConfig } from '../../model';
+import { Validator } from '../../model';
 import { TokenDetector } from '../common/TokenDetector';
-import { QueryValidator } from './QueryValidator';
 
 export const buildQueryLinter = (properties: PropertiesConfig) => {
-    const validator = new QueryValidator(properties);
+    const validator = new Validator(properties);
 
     return (state: EditorState) => {
         const diagnostics: Diagnostic[] = [];
