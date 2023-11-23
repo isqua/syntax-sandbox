@@ -13,7 +13,7 @@ export class Suggest {
 
     getPropertyOperators(): Completion[] {
         return [
-            { label: '=', apply: '= ' },
+            { label: '=', apply: '= ', boost: 99 },
             { label: '!=', apply: '!= ' },
         ];
     }

@@ -131,7 +131,7 @@ describe('autocomplete', () => {
 
             expect(completion).toEqual({
                 options: [
-                    { label: '=', apply: '= ' },
+                    { label: '=', apply: '= ', boost: 99 },
                     { label: '!=', apply: '!= ' },
                 ],
                 from: position,
