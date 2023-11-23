@@ -1,8 +1,11 @@
-import type { SyntaxNodeRef } from '@lezer/common';
+interface NodeRef {
+    from: number;
+    to: number;
+}
 
 interface AbstractToken {
     tokenType: 'property' | 'value';
-    node: SyntaxNodeRef;
+    node: NodeRef;
 }
 
 export interface PropertyToken extends AbstractToken {
