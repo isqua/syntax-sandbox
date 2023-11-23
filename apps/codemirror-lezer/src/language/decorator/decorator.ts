@@ -2,8 +2,8 @@ import { syntaxTree } from '@codemirror/language';
 import { type Range } from '@codemirror/state';
 import { Decoration, EditorView, ViewPlugin, type DecorationSet, type ViewUpdate } from '@codemirror/view';
 
+import type { Decorator } from '../../model';
 import { TokenDetector } from '../common/TokenDetector';
-import type { Decorator } from './base';
 
 type DecorableView = Pick<EditorView, 'state' | 'visibleRanges'>;
 

@@ -1,3 +1,4 @@
+export * from './decorator';
 export * from './suggest';
 export * from './tokens';
 export * from './types';
