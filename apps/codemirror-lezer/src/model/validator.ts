@@ -12,7 +12,7 @@ export class Validator {
                 from: token.node.from,
                 to: token.node.to,
                 severity: 'error',
-                message: `Property ‘${token.name}’ does not exists`,
+                message: `Property ‘${token.name}’ does not exist`,
             }];
         }
 

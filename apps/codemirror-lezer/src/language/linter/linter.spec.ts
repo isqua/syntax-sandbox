@@ -27,7 +27,7 @@ describe('linter', () => {
         expect(diagnosis).toEqual<Diagnostic[]>([{
             from: 0,
             to: 3,
-            message: 'Property ‘foo’ does not exists',
+            message: 'Property ‘foo’ does not exist',
             severity: 'error',
         }]);
     });
