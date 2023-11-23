@@ -1,51 +1,10 @@
-import type { Completion, CompletionContext, CompletionResult } from '@codemirror/autocomplete';
+import type { CompletionContext, CompletionResult } from '@codemirror/autocomplete';
 import { syntaxTree } from '@codemirror/language';
 import type { SyntaxNode } from '@lezer/common';
 
 import type { PropertiesConfig } from '../../model';
+import { Suggest } from '../../model';
 import { Terms } from '../grammar';
-
-class DataBasedSuggest {
-    constructor(protected properties: PropertiesConfig) { }
-
-    getProperties(): Completion[] {
-        return Object.keys(this.properties).map(name => ({
-            label: name,
-            apply: `${name} `,
-        }));
-    }
-
-    getPropertyOperators(): Completion[] {
-        return [
-            { label: '=', apply: '= ' },
-            { label: '!=', apply: '!= ' },
-        ];
-    }
-
-    getLogicalOperators(): Completion[] {
-        return [
-            { label: 'and', apply: 'and ' },
-            { label: 'or', apply: 'or ' },
-        ];
-    }
-
-    getPropertyValues(propertyName: string): Completion[] {
-        const propertyConfig = this.properties[propertyName];
-
-        if (!propertyConfig) {
-            return [];
-        }
-
-        if (propertyConfig.completions) {
-            return propertyConfig.completions;
-        }
-
-        return propertyConfig.values.map(value => ({
-            label: value,
-            apply: `${value} `,
-        }));
-    }
-}
 
 const closestKnownParent = (node: SyntaxNode | null): SyntaxNode | null => {
     if (node === null) {
@@ -86,7 +45,7 @@ const getPropertyNameFromPredicate = (context: CompletionContext, predicate?: Sy
 };
 
 export const buildCompletion = (properties: PropertiesConfig) => {
-    const suggest = new DataBasedSuggest(properties);
+    const suggest = new Suggest(properties);
 
     return (context: CompletionContext): CompletionResult | null => {
         const tree = syntaxTree(context.state);
