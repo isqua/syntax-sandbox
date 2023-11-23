@@ -35,7 +35,7 @@ pnpm test
     1. [linter](./src/language/linter) shows errors for improper tokens
     1. [decorator](./src/language/decorator) shows user-defined widgets for some tokens
     1. [autocomplete](./src/language/autocomplete) suggests related tokens to a user
-    1. [language](./src/language/language) combines them all
+    1. [language](./src/language/language.ts) combines them all
 1. **Domain Specific Data**
     1. [data](./src/data) contains some data and declarations that are related to a specific app (e.g. task manager)
         1. [properties](./src/data/properties.ts) describes possible properties and its values available for QL
