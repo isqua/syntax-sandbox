@@ -2,8 +2,7 @@ import type { CompletionContext, CompletionResult } from '@codemirror/autocomple
 import { syntaxTree } from '@codemirror/language';
 import type { SyntaxNode } from '@lezer/common';
 
-import type { PropertiesConfig } from '../../model';
-import { Suggest } from '../../model';
+import type { ISuggest } from '../../model';
 import { Terms } from '../grammar';
 
 const closestKnownParent = (node: SyntaxNode | null): SyntaxNode | null => {
@@ -44,9 +43,7 @@ const getPropertyNameFromPredicate = (context: CompletionContext, predicate?: Sy
     return propertyName;
 };
 
-export const buildCompletion = (properties: PropertiesConfig) => {
-    const suggest = new Suggest(properties);
-
+export const buildCompletion = (suggest: ISuggest) => {
     return (context: CompletionContext): CompletionResult | null => {
         const tree = syntaxTree(context.state);
         const currentNode = closestKnownParent(tree.resolveInner(context.pos, -1));

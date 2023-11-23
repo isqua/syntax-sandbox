@@ -2,7 +2,7 @@ import { CompletionContext, type CompletionResult } from '@codemirror/autocomple
 import { EditorState } from '@codemirror/state';
 import { describe, expect, it } from 'vitest';
 
-import type { PropertiesConfig } from '../../model';
+import { Suggest, type PropertiesConfig } from '../../model';
 import { queryLanguage } from '../language';
 import { buildCompletion } from './autocomplete';
 
@@ -18,7 +18,8 @@ const getCompletion = (
 ): CompletionResult | null => {
     const state = getEditorState(properties, document);
     const ctx = new CompletionContext(state, position, false);
-    const autocomplete = buildCompletion(properties);
+    const suggest = new Suggest(properties);
+    const autocomplete = buildCompletion(suggest);
 
     return autocomplete(ctx);
 };

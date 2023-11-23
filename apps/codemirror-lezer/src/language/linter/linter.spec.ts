@@ -1,7 +1,7 @@
 import { Diagnostic } from '@codemirror/lint';
 import { describe, expect, it } from 'vitest';
 
-import { PropertiesConfig } from '../../model';
+import { PropertiesConfig, Validator } from '../../model';
 import { getEditorState } from '../../test/utils/state';
 import { buildQueryLinter } from './linter';
 
@@ -10,7 +10,8 @@ const getDiagnostic = (
     document: string,
 ): Diagnostic[] => {
     const state = getEditorState(properties, document);
-    const lint = buildQueryLinter(properties);
+    const validator = new Validator(properties);
+    const lint = buildQueryLinter(validator);
 
     return lint(state);
 };
