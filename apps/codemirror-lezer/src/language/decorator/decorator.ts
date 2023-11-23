@@ -2,12 +2,12 @@ import { syntaxTree } from '@codemirror/language';
 import { type Range } from '@codemirror/state';
 import { Decoration, EditorView, ViewPlugin, type DecorationSet, type ViewUpdate } from '@codemirror/view';
 
-import type { Decorator } from '../../model';
+import type { IDecorator } from '../../model';
 import { TokenDetector } from '../common/TokenDetector';
 
 type DecorableView = Pick<EditorView, 'state' | 'visibleRanges'>;
 
-export function decorate(view: DecorableView, decorator: Decorator) {
+export function decorate(view: DecorableView, decorator: IDecorator) {
     const ranges: Range<Decoration>[] = [];
 
     for (const { from, to } of view.visibleRanges) {
@@ -33,7 +33,7 @@ export function decorate(view: DecorableView, decorator: Decorator) {
     return ranges;
 }
 
-export const decorator = (decorator: Decorator) => {
+export const decorator = (decorator: IDecorator) => {
     class UserDefinedDecorator {
         decorations: DecorationSet;
 
