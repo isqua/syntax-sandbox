@@ -1,5 +1,5 @@
 import type { Completion } from '@codemirror/autocomplete';
-import type { PropertiesConfig } from './types';
+import type { PropertiesConfig } from './properties';
 
 export class Suggest {
     constructor(protected properties: PropertiesConfig) { }

@@ -1,6 +1,6 @@
 import type { Diagnostic } from '@codemirror/lint';
 
-import type { PropertiesConfig } from './types';
+import type { PropertiesConfig } from './properties';
 import type { PropertyToken, ValueToken } from './tokens';
 
 export class Validator {
