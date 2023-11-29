@@ -1,0 +1,22 @@
+.priority {
+    white-space: nowrap;
+}
+
+.priority::before {
+    vertical-align: 2px;
+    margin-inline-end: 4px;
+    opacity: 0.7;
+    font-size: 0.8em;
+}
+
+.high::before {
+    content: '▲';
+}
+
+.medium::before {
+    content: '◆';
+}
+
+.low::before {
+    content: '▼';
+}

@@ -5,6 +5,7 @@ import type { IDecorator, ValueToken } from '../model';
 
 import { BaseDecorator } from '../model';
 import { PersonWidget } from './Person/PersonWidget';
+import { getPriorityMark } from './Priority/PriorityMark';
 
 export class AppDecorator extends BaseDecorator implements IDecorator {
     constructor(protected persons: Person[]) {
@@ -14,6 +15,10 @@ export class AppDecorator extends BaseDecorator implements IDecorator {
     decorateValue(token: ValueToken) {
         if (this.isUsername(token)) {
             return this.decorateUsername(token);
+        }
+
+        if (this.isPriority(token)) {
+            return this.decoratePriority(token);
         }
 
         return [];
@@ -35,6 +40,16 @@ export class AppDecorator extends BaseDecorator implements IDecorator {
             widget: new PersonWidget(person),
             inclusive: true,
         });
+
+        return [deco.range(token.node.from, token.node.to)];
+    }
+
+    private isPriority(token: ValueToken) {
+        return token.property === 'priority';
+    }
+
+    private decoratePriority(token: ValueToken) {
+        const deco = Decoration.mark(getPriorityMark(token.value));
 
         return [deco.range(token.node.from, token.node.to)];
     }
