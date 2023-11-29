@@ -2,7 +2,12 @@ import type { PropertiesConfig } from './properties';
 import { Suggest, type ISuggest } from './suggest';
 import { Validator, type IValidator } from './validator';
 
-export class Model {
+export interface IModel {
+    getSuggest(): ISuggest;
+    getValidator(): IValidator;
+}
+
+export class Model implements IModel {
     protected suggest?: ISuggest;
     protected validator?: IValidator;
 

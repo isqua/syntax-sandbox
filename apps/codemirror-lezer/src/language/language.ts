@@ -2,14 +2,15 @@ import { LRLanguage, LanguageSupport, syntaxHighlighting } from '@codemirror/lan
 import { linter } from '@codemirror/lint';
 import { styleTags, tags } from '@lezer/highlight';
 
-import { Model, type IDecorator, type PropertiesConfig } from '../model';
+import type { IDecorator, IModel } from '../model';
+
 import { buildCompletion } from './autocomplete';
 import { decorator } from './decorator';
 import { parser } from './grammar';
 import { highlighter } from './highlighter';
 import { buildQueryLinter } from './linter';
 
-export const queryLanguage = (properties: PropertiesConfig, appDecorator?: IDecorator) => {
+export const queryLanguage = (model: IModel, appDecorator?: IDecorator) => {
     const parserWithMetadata = parser.configure({
         props: [
             // Properties are Terms of the grammar
@@ -22,8 +23,6 @@ export const queryLanguage = (properties: PropertiesConfig, appDecorator?: IDeco
             }),
         ],
     });
-
-    const model = new Model(properties);
 
     const languageDefinition = LRLanguage.define({
         name: 'queryLanguage',

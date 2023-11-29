@@ -4,13 +4,16 @@ import { ChangeEvent, DiagnosisEvent, Editor, EditorEvents, Preview, getAppRoot 
 import { persons, properties } from './data';
 import { AppDecorator } from './decorator';
 import { getQueryFromTree, queryLanguage } from './language';
+import { Model } from './model';
 
 const PARSE_TREE_TIMEOUT_IN_MS = 500;
 
 const appRoot = getAppRoot('#app');
 
+const model = new Model(properties);
+
 const language = queryLanguage(
-    properties,
+    model,
     new AppDecorator(persons),
 );
 
