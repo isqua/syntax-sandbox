@@ -3,9 +3,21 @@
 }
 
 .person {
+    position: relative;
+    white-space: nowrap;
+    padding: 2px 10px 2px 24px;
+    border-radius: 12px;
+    margin-inline-end: 2px;
     background-color: var(--person-background);
-    padding: 2px 10px;
-    border-radius: 10px;
+}
+
+.avatar {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    left: 2px;
+    top: 2px;
+    border-radius: 50%;
 }
 
 @media (prefers-color-scheme: light) {

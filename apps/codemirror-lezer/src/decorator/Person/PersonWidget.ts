@@ -11,11 +11,19 @@ export class PersonWidget extends WidgetType {
     }
 
     toDOM() {
-        const wrap = document.createElement('span');
+        const name = document.createElement('span');
+        name.innerHTML = `${this.person.name} ${this.person.surname}`;
 
-        wrap.innerHTML = `${this.person.name} ${this.person.surname}`;
+        const avatar = new Image();
+        avatar.src = `./persons/${this.person.username}.jpg`;
+        avatar.classList.add(styles.avatar);
+
+        const wrap = document.createElement('span');
         wrap.classList.add(styles.person);
         wrap.title = `@${this.person.username}, ${this.person.job}`;
+
+        wrap.appendChild(avatar);
+        wrap.appendChild(name);
 
         return wrap;
     }
