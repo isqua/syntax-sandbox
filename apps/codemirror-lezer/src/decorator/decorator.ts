@@ -12,11 +12,22 @@ export class AppDecorator extends BaseDecorator implements IDecorator {
     }
 
     decorateValue(token: ValueToken) {
-        const isUsername = token.value.charAt(0) === '@';
-        const username = isUsername && token.value.slice(1);
+        if (this.isUsername(token)) {
+            return this.decorateUsername(token);
+        }
+
+        return [];
+    }
+
+    private isUsername(token: ValueToken) {
+        return token.property === 'author' && token.value.charAt(0) === '@';
+    }
+
+    private decorateUsername(token: ValueToken) {
+        const username = token.value.slice(1);
         const person = username && this.persons.find(user => user.username === username);
 
-        if (!person || token.property !== 'author') {
+        if (!person) {
             return [];
         }
 
