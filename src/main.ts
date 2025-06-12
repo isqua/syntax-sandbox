@@ -1,5 +1,5 @@
 import { ensureSyntaxTree } from '@codemirror/language';
-import { ChangeEvent, DiagnosisEvent, Editor, EditorEvents, Preview, getAppRoot } from '@syntax-sandbox/ui';
+import { ChangeEvent, DiagnosisEvent, Editor, EditorEvents, Preview, getAppRoot } from './ui';
 
 import { persons, properties } from './data';
 import { AppDecorator } from './decorator';

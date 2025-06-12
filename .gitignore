@@ -11,3 +11,7 @@ node_modules
 dist
 dist-ssr
 *.local
+
+src/language/grammar/*
+!src/language/grammar/*.grammar
+!src/language/grammar/index.ts
