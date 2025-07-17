@@ -8,9 +8,11 @@ My goal was to create query language that is unbound from an application domain.
 
 ## Architecture
 
+![Components Schema](./docs/arch.drawio.svg)
+
 At the application level users of the component describe available properties and values. Please see the example in [src/data](./src/data/properties.ts). They can also define a `Suggest` and/or `Validator` classes to implement some custom logic. Then they need to instantiate a data model with defined properties and pass it to the `Editor`, see [src/main.ts](./src/main.ts). Optionally, they can also create a `Decorator` to add some specific UI features for different properties and values: [src/decorator](./src/decorator/decorator.ts).
 
-Then, the `Editor` renders a CodeMirror instance with some plugins. In the [src/language](./src/language/language.ts) multiple CodeMirror plugins are instantiated using defined data model and decorator. The parser is generated using Lezer from the [QueryLanguage.grammar](./src/language/grammar/QueryLanguage.grammar).
+Then, the `Editor` renders a CodeMirror instance with some plugins. In the [src/language](./src/language/language.ts) multiple CodeMirror plugins are instantiated using defined data model and decorator. The parser is generated using Lezer from the [QueryLanguage.grammar](./src/language/grammar/QueryLanguage.grammar). The mapper from syntax tree to the MongoDB-like JSON is implemented in [src/language/query](./src/language/query/query.ts).
 
 The `Editor` emits change event with the result of parsing. The result is shaped as MongoDB-like JSON to show the query tree.
 
